@@ -4,8 +4,4 @@ env:
   - RACK_ENV=development
 sudo: false
 rvm:
-- 2.3.1
-services:
-- docker
-before_install:
-- docker pull mumuki/mumuki-puzzle-worker
+- 2.6.3
