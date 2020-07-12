@@ -13,7 +13,7 @@ describe 'runner' do
   it 'right exact positions' do
     response = bridge.run_tests!(test: "Muzzle.expect([[1, 2], [1, 3]])\nMuzzle.basic(1, 2, 'an_image.png')\n",
                                  extra: '',
-                                 content: '[[100, 200], [100, 300]]',
+                                 content: '{"positions": [[100, 200], [100, 300]]}',
                                  expectations: [])
 
     expect(response).to eq(response_type: :unstructured,
@@ -27,7 +27,7 @@ describe 'runner' do
   it 'wrong exact positions' do
     response = bridge.run_tests!(test: "Muzzle.expect([[1, 2], [1, 3]])\nMuzzle.basic(1, 2, 'an_image.png')\n",
                                  extra: '',
-                                 content: '[[100, 200], [100, 400]]',
+                                 content: '{"positions": [[100, 200], [100, 400]]}',
                                  expectations: [])
 
     expect(response).to eq(response_type: :unstructured,
@@ -42,7 +42,7 @@ describe 'runner' do
   it 'right relative positions' do
     response = bridge.run_tests!(test: "Muzzle.expect([[1, 2], [1, 3]])\nMuzzle.basic(1, 2, 'an_image.png')\n",
                                  extra: '',
-                                 content: '[[200, 300], [200, 400]]',
+                                 content: '{"positions": [[200, 300], [200, 400]]}',
                                  expectations: [])
 
     expect(response).to eq(response_type: :unstructured,
@@ -56,7 +56,7 @@ describe 'runner' do
   it 'wrong relative positions' do
     response = bridge.run_tests!(test: "Muzzle.expect([[1, 2], [1, 3]])\nMuzzle.basic(1, 2, 'an_image.png')\n",
                                  extra: '',
-                                 content: '[[200, 300], [200, 450]]',
+                                 content: '{"positions": [[200, 300], [200, 450]]}',
                                  expectations: [])
 
     expect(response).to eq(response_type: :unstructured,
@@ -72,7 +72,7 @@ describe 'runner' do
   it 'no positions' do
     response = bridge.run_tests!(test: "Muzzle.basic(1, 2, 'an_image.png')\n",
                                  extra: '',
-                                 content: '[[200, 300], [200, 400]]',
+                                 content: '{"positions": [[200, 300], [200, 400]]}',
                                  expectations: [])
 
     expect(response).to eq(response_type: :unstructured,
