@@ -10,7 +10,7 @@ declare class Anchor {
      * Creates a translated copy of this Anchor
      * according to a vector
      */
-    translated(dx: number, dy: number): void;
+    translated(dx: number, dy: number): Anchor;
     /**
      * Translates this anchor given to a vector
      */
@@ -25,7 +25,14 @@ declare class Anchor {
      * Calculates the difference between this anchor and another
      */
     diff(other: Anchor): Pair;
+    /**
+     * Converts this anchor into a point
+     */
     asPoint(): Pair;
+    /**
+     * Converts this anchor into a position
+     */
+    asPosition(): Position;
     export(): Position;
     static atRandom(maxX: number, maxY: number): Anchor;
     static import(position: Position): Anchor;
@@ -217,6 +224,10 @@ declare class Canvas {
     _bindPieceToGroup(piece: Piece, group: Group): void;
     _imageMetadataFor(model: Piece): ImageMetadata;
     _newPiece(structureLike: StructureLike, metadata: CanvasMetadata): void;
+    /**
+     * The puzzle rendered by this canvas
+     */
+    puzzle: any;
     settings: any;
 }
 
@@ -300,6 +311,11 @@ declare class Manufacturer {
     _annotateAll(pieces: Piece[]): void;
     _annotate(piece: Piece, index: number): void;
     _buildPiece(puzzle: Puzzle, horizontalSequence: InsertSequence, verticalSequence: InsertSequence): void;
+}
+
+declare class Positioner {
+    constructor(puzzle: Puzzle, headAnchor: Anchor);
+    naturalAnchor(x: number, y: number): void;
 }
 
 /**
@@ -403,6 +419,7 @@ declare type PieceDump = {
  */
 declare class Piece {
     constructor(options?: Structure);
+    centralAnchor: Anchor;
     translateListeners: TranslationListener[];
     connectListeners: ConnectionListener[];
     disconnectListeners: ConnectionListener[];
@@ -503,7 +520,9 @@ declare class Piece {
      * Converts this piece into a plain, stringify-ready object.
      * Connections should have ids
      */
-    export(): PieceDump;
+    export(options: {
+        compact?: boolean;
+    }): PieceDump;
     /**
      * Converts this piece back from a dump. Connections are not restored. {@link Puzzle#autoconnect} method should be used
      * after importing all them
@@ -605,6 +624,10 @@ declare class Puzzle {
      */
     autoconnect(): void;
     /**
+     * Disconnects all pieces
+     */
+    disconnect(): void;
+    /**
      * Tries to connect the given piece to the rest of the set
      * This method is O(n)
      */
@@ -615,7 +638,16 @@ declare class Puzzle {
     onConnect(f: ConnectionListener): void;
     onDisconnect(f: ConnectionListener): void;
     onValid(f: ValidationListener): void;
+    /**
+     * Answers the list of points where
+     * central anchors of pieces are located
+     */
     points: any;
+    /**
+     * Answers a list of points whose coordinates are scaled
+     * to the {@link Puzzle#pieceWidth}
+     */
+    refs: any;
     /**
      * Returns the first piece
      */
@@ -626,10 +658,22 @@ declare class Puzzle {
     headAnchor: any;
     attachValidator(validator: Validator): void;
     /**
+     * Wether all the pieces in this puzzle are connected
+     */
+    connected: any;
+    /**
+     * The piece width, from edge to edge
+     */
+    pieceWidth: any;
+    /**
      * Converts this piece into a plain, stringify-ready object.
      * Pieces should have ids
+     * @param options - config options for export
+     * @param [options.compact] - if connection information must be omitted
      */
-    export(): PuzzleDump;
+    export(options: {
+        compact?: boolean;
+    }): PuzzleDump;
     static import(dump: PuzzleDump): Puzzle;
 }
 
@@ -713,6 +757,9 @@ declare type PieceCondition = (puzzle: Piece) => boolean;
 
 declare type PuzzleCondition = (puzzle: Puzzle) => boolean;
 
+/**
+ * A validator that evaluates each piece independently
+ */
 declare class PieceValidator {
     constructor(f: PieceCondition);
     isValid(puzzle: Puzzle): boolean;
@@ -722,5 +769,9 @@ declare class PuzzleValidator {
     constructor(f: PuzzleCondition);
     isValid(puzzle: Puzzle): void;
     static connected(): void;
+    /**
+     * @param expected - the expected relative refs
+     */
+    static relativeRefs(expected: Pair[]): PuzzleCondition;
 }
 
