@@ -25,28 +25,33 @@
       </div>
       <pre>
         <code>
+          const baseUrl = 'https://raw.githubusercontent.com/MumukiProject/mumuki-guia-gobstones-alternativa-kids/master/assets/attires/';
           Muzzle.baseConfig.pieceSize = 200;
           Muzzle.baseConfig.borderFill = 20;
           Muzzle.match([
-            {imagePath: 'https://raw.githubusercontent.com/MumukiProject/mumuki-guia-gobstones-alternativa-kids/master/assets/attires/va_vacio.png'},
-            {imagePath: 'https://raw.githubusercontent.com/MumukiProject/mumuki-guia-gobstones-alternativa-kids/master/assets/attires/cu_vacio.png'}
+            {imagePath: `${base}/va_vacio.png`},
+            {imagePath: `${base}/cu_vacio.png`},
+            {imagePath: `${base}/chips_poco.pn`}
           ], [
-            {imagePath: 'https://raw.githubusercontent.com/MumukiProject/mumuki-guia-gobstones-alternativa-kids/master/assets/attires/va_fru.png'},
-            {imagePath: 'https://raw.githubusercontent.com/MumukiProject/mumuki-guia-gobstones-alternativa-kids/master/assets/attires/cu_vai.png'}
+            {imagePath: `${base}/va_fru.png`},
+            {imagePath: `${base}/cu_vai.png`},
+            {imagePath: `${base}/chips_mucho.png`},
           ]);
-
         </code>
       </pre>
       <script>
+        const baseUrl = 'https://raw.githubusercontent.com/MumukiProject/mumuki-guia-gobstones-alternativa-kids/master/assets/attires/';
         const match = Muzzle.another('muzzle-canvas-match');
         match.baseConfig.pieceSize = 200;
         match.baseConfig.borderFill = 20;
         match.match([
-          {imagePath: 'https://raw.githubusercontent.com/MumukiProject/mumuki-guia-gobstones-alternativa-kids/master/assets/attires/va_vacio.png'},
-          {imagePath: 'https://raw.githubusercontent.com/MumukiProject/mumuki-guia-gobstones-alternativa-kids/master/assets/attires/cu_vacio.png'}
+          {imagePath: `${base}/va_vacio.png`},
+          {imagePath: `${base}/cu_vacio.png`},
+          {imagePath: `${base}/chips_poco.pn`}
         ], [
-          {imagePath: 'https://raw.githubusercontent.com/MumukiProject/mumuki-guia-gobstones-alternativa-kids/master/assets/attires/va_fru.png'},
-          {imagePath: 'https://raw.githubusercontent.com/MumukiProject/mumuki-guia-gobstones-alternativa-kids/master/assets/attires/cu_vai.png'}
+          {imagePath: `${base}/va_fru.png`},
+          {imagePath: `${base}/cu_vai.png`},
+          {imagePath: `${base}/chips_mucho.png`},
         ]);
         match.onSubmit = (solutionJson, valid) => {
           console.log('submitting muzzle...')
