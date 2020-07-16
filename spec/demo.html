@@ -1,0 +1,58 @@
+<html>
+  <head>
+    <script src="../lib/public/vendor/headbreaker.js"></script>
+    <script src="../lib/public/js/muzzle.js"></script>
+  </head>
+  <body>
+    <div>
+      <div id="muzzle-canvas" >
+      </div>
+      <pre>
+        <code>
+          Muzzle.basic(10, 10, 'https://flbulgarelli.github.io/headbreaker/static/berni.jpg');
+        </code>
+      </pre>
+      <script>
+        Muzzle.basic(10, 10, 'https://flbulgarelli.github.io/headbreaker/static/berni.jpg');
+        Muzzle.onSubmit = (solutionJson, valid) => {
+          console.log('submitting muzzle...')
+        };
+      </script>
+    </div>
+
+    <div>
+      <div id="muzzle-canvas-match" >
+      </div>
+      <pre>
+        <code>
+          Muzzle.baseConfig.pieceSize = 200;
+          Muzzle.baseConfig.borderFill = 20;
+          Muzzle.match([
+            {imagePath: 'https://raw.githubusercontent.com/MumukiProject/mumuki-guia-gobstones-alternativa-kids/master/assets/attires/va_vacio.png'},
+            {imagePath: 'https://raw.githubusercontent.com/MumukiProject/mumuki-guia-gobstones-alternativa-kids/master/assets/attires/cu_vacio.png'}
+          ], [
+            {imagePath: 'https://raw.githubusercontent.com/MumukiProject/mumuki-guia-gobstones-alternativa-kids/master/assets/attires/va_fru.png'},
+            {imagePath: 'https://raw.githubusercontent.com/MumukiProject/mumuki-guia-gobstones-alternativa-kids/master/assets/attires/cu_vai.png'}
+          ]);
+
+        </code>
+      </pre>
+      <script>
+        const match = Muzzle.another('muzzle-canvas-match');
+        match.baseConfig.pieceSize = 200;
+        match.baseConfig.borderFill = 20;
+        match.match([
+          {imagePath: 'https://raw.githubusercontent.com/MumukiProject/mumuki-guia-gobstones-alternativa-kids/master/assets/attires/va_vacio.png'},
+          {imagePath: 'https://raw.githubusercontent.com/MumukiProject/mumuki-guia-gobstones-alternativa-kids/master/assets/attires/cu_vacio.png'}
+        ], [
+          {imagePath: 'https://raw.githubusercontent.com/MumukiProject/mumuki-guia-gobstones-alternativa-kids/master/assets/attires/va_fru.png'},
+          {imagePath: 'https://raw.githubusercontent.com/MumukiProject/mumuki-guia-gobstones-alternativa-kids/master/assets/attires/cu_vai.png'}
+        ]);
+        match.onSubmit = (solutionJson, valid) => {
+          console.log('submitting muzzle...')
+        };
+      </script>
+    </div>
+  </body>
+
+</html>
