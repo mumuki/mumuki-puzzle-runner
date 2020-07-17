@@ -45,13 +45,15 @@
         match.baseConfig.pieceSize = 200;
         match.baseConfig.borderFill = 20;
         match.match([
-          {imagePath: `${base}/va_vacio.png`},
-          {imagePath: `${base}/cu_vacio.png`},
-          {imagePath: `${base}/chips_poco.pn`}
+          {imagePath: `${baseUrl}/va_vacio.png`},
+          {imagePath: `${baseUrl}/cu_vacio.png`},
+          {imagePath: `${baseUrl}/chips_poco.png`}
         ], [
-          {imagePath: `${base}/va_fru.png`},
-          {imagePath: `${base}/cu_vai.png`},
-          {imagePath: `${base}/chips_mucho.png`},
+          {imagePath: `${baseUrl}/va_fru.png`},
+          {imagePath: `${baseUrl}/cu_vai.png`},
+          {imagePath: `${baseUrl}/chips_mucho.png`},
+        ], [
+          {imagePath: `${baseUrl}/choc_mitad_vacio2.png`}
         ]);
         match.onSubmit = (solutionJson, valid) => {
           console.log('submitting muzzle...')
