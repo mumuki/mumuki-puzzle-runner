@@ -258,6 +258,31 @@ declare module "ImageMetadata" {
     function asImageMetadata(imageLike: ImageLike): ImageMetadata;
 }
 
+declare module "headbreaker" {
+    var anchor: any;
+    var position: any;
+    var Anchor: any;
+    var Puzzle: any;
+    var Piece: any;
+    var Canvas: any;
+    var Manufacturer: any;
+    var InsertSequence: any;
+    var PieceValidator: any;
+    var PuzzleValidator: any;
+    var NullValidator: any;
+    var Tab: any;
+    var Slot: any;
+    var None: any;
+    var Pair: any;
+    var Metadata: any;
+    var SpatialMetadata: any;
+    var Outline: any;
+    var Structure: any;
+    var Position: any;
+    var generators: any;
+    var painters: any;
+}
+
 /**
  * A connection element of a piece
  */
