@@ -9,13 +9,13 @@
       </div>
       <pre>
         <code>
-          Muzzle.basic(10, 10, 'https://flbulgarelli.github.io/headbreaker/static/berni.jpg');
+          Muzzle.basic(4, 4, 'https://flbulgarelli.github.io/headbreaker/static/berni.jpg');
         </code>
       </pre>
       <script>
-        Muzzle.basic(10, 10, 'https://flbulgarelli.github.io/headbreaker/static/berni.jpg');
+        Muzzle.basic(4, 4, 'https://flbulgarelli.github.io/headbreaker/static/berni.jpg');
         Muzzle.onSubmit = (solutionJson, valid) => {
-          console.log('submitting muzzle...')
+          alert('Submitting muzzle...')
         };
       </script>
     </div>
@@ -27,13 +27,15 @@
         <code>
           const baseUrl = 'https://raw.githubusercontent.com/MumukiProject/mumuki-guia-gobstones-alternativa-kids/master/assets/attires/';
           Muzzle.match([
-            {imagePath: `${base}/va_vacio.png`},
-            {imagePath: `${base}/cu_vacio.png`},
-            {imagePath: `${base}/chips_poco.pn`}
+            {imagePath: `${baseUrl}/va_vacio.png`},
+            {imagePath: `${baseUrl}/cu_vacio.png`},
+            {imagePath: `${baseUrl}/chips_poco.png`}
           ], [
-            {imagePath: `${base}/va_fru.png`},
-            {imagePath: `${base}/cu_vai.png`},
-            {imagePath: `${base}/chips_mucho.png`},
+            {imagePath: `${baseUrl}/va_fru.png`},
+            {imagePath: `${baseUrl}/cu_vai.png`},
+            {imagePath: `${baseUrl}/chips_mucho.png`},
+          ], [
+            {imagePath: `${baseUrl}/choc_mitad_vacio2.png`}
           ]);
         </code>
       </pre>
@@ -52,7 +54,10 @@
           {imagePath: `${baseUrl}/choc_mitad_vacio2.png`}
         ]);
         match.onSubmit = (solutionJson, valid) => {
-          console.log('submitting muzzle...')
+          alert('Submitting muzzle...')
+        };
+        match.onValid = () => {
+          alert('I am valid, but I am not going to submit solution');
         };
       </script>
     </div>
