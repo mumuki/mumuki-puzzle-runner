@@ -9,13 +9,16 @@
       </div>
       <pre>
         <code>
-          Muzzle.basic(3, 3, 'https://flbulgarelli.github.io/headbreaker/static/berni.jpg');
+          Muzzle.basic(3, 2, 'https://flbulgarelli.github.io/headbreaker/static/berni.jpg');
         </code>
       </pre>
       <script>
-        Muzzle.basic(3, 3, 'https://flbulgarelli.github.io/headbreaker/static/berni.jpg');
+        Muzzle.basic(3, 2, 'https://flbulgarelli.github.io/headbreaker/static/berni.jpg');
         Muzzle.onSubmit = (solutionJson, valid) => {
-          alert('Submitting muzzle...')
+          alert('I am going to submit solution');
+        };
+        Muzzle.onValid = () => {
+          alert('I am valid');
         };
       </script>
     </div>
@@ -27,15 +30,15 @@
         <code>
           const baseUrl = 'https://raw.githubusercontent.com/MumukiProject/mumuki-guia-gobstones-alternativa-kids/master/assets/attires/';
           Muzzle.match([
-            {imagePath: `${baseUrl}/va_vacio.png`},
-            {imagePath: `${baseUrl}/cu_vacio.png`},
-            {imagePath: `${baseUrl}/chips_poco.png`}
+            `${baseUrl}/va_vacio.png`,
+            `${baseUrl}/cu_vacio.png`,
+            `${baseUrl}/chips_poco.png`
           ], [
-            {imagePath: `${baseUrl}/va_fru.png`},
-            {imagePath: `${baseUrl}/cu_vai.png`},
-            {imagePath: `${baseUrl}/chips_mucho.png`},
+            `${baseUrl}/va_fru.png`,
+            `${baseUrl}/cu_vai.png`,
+            `${baseUrl}/chips_mucho.png`,
           ], [
-            {imagePath: `${baseUrl}/choc_mitad_vacio2.png`}
+            `${baseUrl}/choc_mitad_vacio2.png`
           ]);
         </code>
       </pre>
@@ -43,18 +46,18 @@
         const baseUrl = 'https://raw.githubusercontent.com/MumukiProject/mumuki-guia-gobstones-alternativa-kids/master/assets/attires/';
         const match = Muzzle.another('muzzle-canvas-match');
         match.match([
-          {imagePath: `${baseUrl}/va_vacio.png`},
-          {imagePath: `${baseUrl}/cu_vacio.png`},
-          {imagePath: `${baseUrl}/chips_poco.png`}
+          `${baseUrl}/va_vacio.png`,
+          `${baseUrl}/cu_vacio.png`,
+          `${baseUrl}/chips_poco.png`
         ], [
-          {imagePath: `${baseUrl}/va_fru.png`},
-          {imagePath: `${baseUrl}/cu_vai.png`},
-          {imagePath: `${baseUrl}/chips_mucho.png`},
+          `${baseUrl}/va_fru.png`,
+          `${baseUrl}/cu_vai.png`,
+          `${baseUrl}/chips_mucho.png`,
         ], [
-          {imagePath: `${baseUrl}/choc_mitad_vacio2.png`}
+          `${baseUrl}/choc_mitad_vacio2.png`
         ]);
         match.onSubmit = (solutionJson, valid) => {
-          alert('Submitting muzzle...')
+          alert('I am valid and I am going to submit solution')
         };
         match.onValid = () => {
           alert('I am valid, but I am not going to submit solution');
