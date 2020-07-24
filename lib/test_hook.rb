@@ -1,6 +1,8 @@
 class PuzzleTestHook < Mumukit::Templates::FileHook
-  def run!(positions)
-    if !positions.expected || positions_relatively_equal(positions.expected, positions.actual)
+  def run!(req)
+    if req.client_result
+      ['', req.client_result['status']]
+    elsif !req.expected || positions_relatively_equal(req.expected, req.actual)
       ['', :passed]
     else
       ['', :failed]
@@ -8,10 +10,14 @@ class PuzzleTestHook < Mumukit::Templates::FileHook
   end
 
   def compile(req)
-    {
-      expected: parse_positions(req),
-      actual: JSON.parse(req.content)['positions']
-    }.to_struct
+    if req.client_result
+      req
+    else
+      {
+        expected: parse_positions(req),
+        actual: JSON.parse(req.content)['positions']
+      }.to_struct
+    end
   end
 
   def parse_positions(req)

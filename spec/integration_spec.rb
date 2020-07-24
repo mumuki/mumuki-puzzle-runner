@@ -10,6 +10,37 @@ describe 'runner' do
   end
   after(:all) { Process.kill 'TERM', @pid }
 
+  it 'with passed client result' do
+    response = bridge.run_tests!(test: "Muzzle.match(['foo.png'], ['bar.png'])\n",
+                                 extra: '',
+                                 content: '{"positions": [[100, 200], [100, 300]]}',
+                                 client_result: {status: :passed, test_results: []},
+                                 expectations: [])
+
+    expect(response).to eq(response_type: :unstructured,
+                           test_results: [],
+                           status: :passed,
+                           feedback: '',
+                           expectation_results: [],
+                           result: '')
+  end
+
+  it 'with failed client result' do
+    response = bridge.run_tests!(test: "Muzzle.match(['foo.png'], ['bar.png'])\n",
+                                 extra: '',
+                                 content: '{"positions": [[100, 200], [100, 300]]}',
+                                 client_result: {status: :failed, test_results: []},
+                                 expectations: [])
+
+    expect(response).to eq(response_type: :unstructured,
+                           test_results: [],
+                           status: :failed,
+                           feedback: '',
+                           expectation_results: [],
+                           result: '')
+  end
+
+
   it 'right exact positions' do
     response = bridge.run_tests!(test: "Muzzle.expect([[1, 2], [1, 3]])\nMuzzle.basic(1, 2, 'an_image.png')\n",
                                  extra: '',
