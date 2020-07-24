@@ -1,7 +1,7 @@
 class PuzzleTestHook < Mumukit::Templates::FileHook
   def run!(req)
     if req.client_result
-      ['', req.client_result['status']]
+      ['', (req.client_result['status'].passed? ? :passed : :failed)]
     elsif !req.expected || positions_relatively_equal(req.expected, req.actual)
       ['', :passed]
     else
