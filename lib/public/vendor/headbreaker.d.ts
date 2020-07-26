@@ -190,6 +190,11 @@ declare class Canvas {
      */
     attachRelativePositionValidator(): void;
     /**
+     * Sets a validator that will report when puzzle are at the expected given
+     * relative refs
+     */
+    attachRelativeRefsValidator(expected: any): void;
+    /**
      * Sets a validator that will report when puzzle pieces are in their expected absolute
      * positions, overriding any previously configured validator
      */
@@ -204,6 +209,10 @@ declare class Canvas {
     onDisconnect(f: CanvasConnectionListener): void;
     onTranslate(f: CanvasTranslationListener): void;
     onValid(f: ValidationListener): void;
+    /**
+     * Returns the current validation status
+     */
+    valid: boolean;
     /**
      * Answers the visual representation for the given piece.
      * This method uses piece's id.
@@ -227,8 +236,8 @@ declare class Canvas {
     /**
      * The puzzle rendered by this canvas
      */
-    puzzle: any;
-    settings: any;
+    puzzle: Puzzle;
+    settings: Settings;
 }
 
 declare interface DummyPainter extends Painter {
@@ -258,30 +267,7 @@ declare module "ImageMetadata" {
     function asImageMetadata(imageLike: ImageLike): ImageMetadata;
 }
 
-declare module "headbreaker" {
-    var anchor: any;
-    var position: any;
-    var Anchor: any;
-    var Puzzle: any;
-    var Piece: any;
-    var Canvas: any;
-    var Manufacturer: any;
-    var InsertSequence: any;
-    var PieceValidator: any;
-    var PuzzleValidator: any;
-    var NullValidator: any;
-    var Tab: any;
-    var Slot: any;
-    var None: any;
-    var Pair: any;
-    var Metadata: any;
-    var SpatialMetadata: any;
-    var Outline: any;
-    var Structure: any;
-    var Position: any;
-    var generators: any;
-    var painters: any;
-}
+declare module "headbreaker" { }
 
 /**
  * A connection element of a piece
@@ -460,7 +446,9 @@ declare class Piece {
      */
     reannotate(metadata: any): void;
     belongTo(puzzle: any): void;
-    presentConnections: any;
+    presentConnections: Piece[];
+    connections: Piece[];
+    inserts: Insert[];
     /**
      * @param f - the callback
      */
@@ -531,16 +519,16 @@ declare class Piece {
     horizontallyCloseTo(other: Piece): boolean;
     verticallyMatch(other: Piece): boolean;
     horizontallyMatch(other: Piece): boolean;
-    downAnchor: any;
-    rightAnchor: any;
-    upAnchor: any;
-    leftAnchor: any;
-    size: any;
-    proximity: any;
+    downAnchor: Anchor;
+    rightAnchor: Anchor;
+    upAnchor: Anchor;
+    leftAnchor: Anchor;
+    size: number;
+    proximity: number;
     /**
      * This piece id. It is extracted from metadata
      */
-    id: any;
+    id: string;
     /**
      * Converts this piece into a plain, stringify-ready object.
      * Connections should have ids
@@ -667,29 +655,55 @@ declare class Puzzle {
      * Answers the list of points where
      * central anchors of pieces are located
      */
-    points: any;
+    points: Pair[];
     /**
      * Answers a list of points whose coordinates are scaled
      * to the {@link Puzzle#pieceWidth}
      */
-    refs: any;
+    refs: Pair[];
+    metadata: any[];
     /**
      * Returns the first piece
      */
-    head: any;
+    head: Piece;
     /**
      * Returns the central anchor of the first piece
      */
-    headAnchor: any;
+    headAnchor: Anchor;
     attachValidator(validator: Validator): void;
+    /**
+     * Checks whether this puzzle is valid.
+     *
+     * Calling this method will not fire any validation listeners nor update the
+     * valid property.
+     */
+    isValid(): boolean;
+    /**
+     * Returns the current validation status
+     *
+     * Calling this property will not fire any validation listeners.
+     */
+    valid: boolean;
+    /**
+     * Checks whether this puzzle is valid, updating valid property
+     * and firing validation listeners if becomes valid
+     */
+    validate(): void;
+    /**
+     * Checks whether this puzzle is valid, updating valid property.
+     *
+     * Validations listeners are NOT fired.
+     */
+    updateValidity(): void;
     /**
      * Wether all the pieces in this puzzle are connected
      */
-    connected: any;
+    connected: boolean;
     /**
-     * The piece width, from edge to edge
+     * The piece width, from edge to edge.
+     * This is the double of the {@link Puzzle#pieceSize}
      */
-    pieceWidth: any;
+    pieceWidth: number;
     /**
      * Converts this piece into a plain, stringify-ready object.
      * Pieces should have ids
@@ -778,6 +792,33 @@ declare type Validator = PieceValidator | PuzzleValidator | NullValidator;
 
 declare type ValidationListener = (puzzle: Puzzle) => void;
 
+declare class AbstractValidator {
+    validListeners: ValidationListener[];
+    /**
+     * Validates the puzzle, updating the validity state and
+     * firing validation events
+     */
+    validate(puzzle: Puzzle): void;
+    /**
+     * Updates the valid state.
+     */
+    updateValidity(puzzle: Puzzle): void;
+    fireValid(puzzle: Puzzle): void;
+    /**
+     * Registers a validation listener
+     */
+    onValid(f: ValidationListener): void;
+    /**
+     * Answers the current validity status of this validator. This
+     * property neither alters the current status nor triggers new validity checks
+     */
+    valid: boolean;
+    /**
+     * Answers wether this is the {@link NullValidator}
+     */
+    isNull: boolean;
+}
+
 declare type PieceCondition = (puzzle: Piece) => boolean;
 
 declare type PuzzleCondition = (puzzle: Puzzle) => boolean;
@@ -790,6 +831,9 @@ declare class PieceValidator {
     isValid(puzzle: Puzzle): boolean;
 }
 
+/**
+ * A validator that evaluates the whole puzzle
+ */
 declare class PuzzleValidator {
     constructor(f: PuzzleCondition);
     isValid(puzzle: Puzzle): void;
@@ -798,5 +842,13 @@ declare class PuzzleValidator {
      * @param expected - the expected relative refs
      */
     static relativeRefs(expected: Pair[]): PuzzleCondition;
+}
+
+/**
+ * A validator that always is invalid
+ */
+declare class NullValidator {
+    isValid(puzzle: Puzzle): void;
+    isNull: boolean;
 }
 
