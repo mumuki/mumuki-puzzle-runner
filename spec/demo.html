@@ -5,6 +5,7 @@
   </head>
   <body>
     <div>
+      <h2>Basic</h2>
       <div id="muzzle-canvas" >
       </div>
       <pre>
@@ -24,6 +25,34 @@
     </div>
 
     <div>
+      <h2>Basic (solved)</h2>
+      <div id="muzzle-canvas-solved" >
+      </div>
+      <pre>
+        <code>
+          Muzzle.basic(3, 2, 'https://flbulgarelli.github.io/headbreaker/static/berni.jpg').then(it => {
+            it.solve();
+            it.redraw();
+          });
+        </code>
+      </pre>
+      <script>
+        const solved = Muzzle.another('muzzle-canvas-solved');
+        solved.basic(3, 2, 'https://flbulgarelli.github.io/headbreaker/static/berni.jpg').then(it => {
+          it.solve();
+          it.redraw();
+        });
+        solved.onSubmit = (solutionJson, valid) => {
+          alert('I am going to submit solution');
+        };
+        solved.onValid = () => {
+          alert('I am valid');
+        };
+      </script>
+    </div>
+
+    <div>
+      <h2>Match</h2>
       <div id="muzzle-canvas-match" >
       </div>
       <pre>
