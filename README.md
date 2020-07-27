@@ -129,22 +129,26 @@ handling solutions persistence and submitting them
 **Kind**: global class
 
 * [MuzzleCanvas](#MuzzleCanvas)
-    * [.canvasId](#MuzzleCanvas+canvasId)
-    * [.expectedRefsAreOnlyDescriptive](#MuzzleCanvas+expectedRefsAreOnlyDescriptive)
-    * [.canvasWidth](#MuzzleCanvas+canvasWidth)
-    * [.canvasHeight](#MuzzleCanvas+canvasHeight)
-    * [.borderFill](#MuzzleCanvas+borderFill)
-    * [.pieceSize](#MuzzleCanvas+pieceSize)
-    * [.scaleImageWidthToFit](#MuzzleCanvas+scaleImageWidthToFit)
-    * [.previousSolutionJson](#MuzzleCanvas+previousSolutionJson) : <code>string</code>
+    * [.canvasId](#MuzzleCanvas+canvasId) : <code>string</code>
+    * [.expectedRefsAreOnlyDescriptive](#MuzzleCanvas+expectedRefsAreOnlyDescriptive) : <code>boolean</code>
+    * [.canvasWidth](#MuzzleCanvas+canvasWidth) : <code>number</code>
+    * [.canvasHeight](#MuzzleCanvas+canvasHeight) : <code>number</code>
+    * [.borderFill](#MuzzleCanvas+borderFill) : <code>number</code>
+    * [.pieceSize](#MuzzleCanvas+pieceSize) : <code>number</code>
+    * [.scaleImageWidthToFit](#MuzzleCanvas+scaleImageWidthToFit) : <code>boolean</code>
+    * [.previousSolutionContent](#MuzzleCanvas+previousSolutionContent) : <code>string</code>
+    * [.baseConfig](#MuzzleCanvas+baseConfig)
     * [.canvas](#MuzzleCanvas+canvas) ⇒ <code>Canvas</code>
     * [.solution](#MuzzleCanvas+solution) ⇒ [<code>Solution</code>](#Solution)
+    * [.solutionContent](#MuzzleCanvas+solutionContent)
+    * [.clientResultStatus](#MuzzleCanvas+clientResultStatus) ⇒ <code>&quot;passed&quot;</code> \| <code>&quot;failed&quot;</code>
     * [.onReady()](#MuzzleCanvas+onReady)
-    * [.onSubmit(solutionJson, valid)](#MuzzleCanvas+onSubmit)
+    * [.onSubmit(submission)](#MuzzleCanvas+onSubmit)
+    * [.onValid()](#MuzzleCanvas+onValid)
     * [.draw()](#MuzzleCanvas+draw)
     * [.expect(refs)](#MuzzleCanvas+expect)
     * [.basic(x, y, imagePath)](#MuzzleCanvas+basic) ⇒ <code>Promise.&lt;Canvas&gt;</code>
-    * [.multi(configs)](#MuzzleCanvas+multi) ⇒ <code>Promise.&lt;Canvas&gt;</code>
+    * [.multi(x, y, [imagePaths])](#MuzzleCanvas+multi) ⇒ <code>Promise.&lt;Canvas&gt;</code>
     * [.match(leftUrls, rightUrls, leftOddUrls, rightOddUrls)](#MuzzleCanvas+match) ⇒ <code>Promise.&lt;Canvas&gt;</code>
     * [.custom(canvas)](#MuzzleCanvas+custom) ⇒ <code>Promise.&lt;Canvas&gt;</code>
     * [.ready()](#MuzzleCanvas+ready)
@@ -154,14 +158,14 @@ handling solutions persistence and submitting them
 
 <a name="MuzzleCanvas+canvasId"></a>
 
-### muzzleCanvas.canvasId
+### muzzleCanvas.canvasId : <code>string</code>
 The id of the HTML element that will contain the canvas
 Override it you are going to place in a non-standard way
 
 **Kind**: instance property of [<code>MuzzleCanvas</code>](#MuzzleCanvas)
 <a name="MuzzleCanvas+expectedRefsAreOnlyDescriptive"></a>
 
-### muzzleCanvas.expectedRefsAreOnlyDescriptive
+### muzzleCanvas.expectedRefsAreOnlyDescriptive : <code>boolean</code>
 Wether expected refs shall be ignored by Muzzle.
 
 They will still be evaluated server-side.
@@ -169,40 +173,44 @@ They will still be evaluated server-side.
 **Kind**: instance property of [<code>MuzzleCanvas</code>](#MuzzleCanvas)
 <a name="MuzzleCanvas+canvasWidth"></a>
 
-### muzzleCanvas.canvasWidth
+### muzzleCanvas.canvasWidth : <code>number</code>
 Width of canvas
 
 **Kind**: instance property of [<code>MuzzleCanvas</code>](#MuzzleCanvas)
 <a name="MuzzleCanvas+canvasHeight"></a>
 
-### muzzleCanvas.canvasHeight
+### muzzleCanvas.canvasHeight : <code>number</code>
 Height of canvas
 
 **Kind**: instance property of [<code>MuzzleCanvas</code>](#MuzzleCanvas)
 <a name="MuzzleCanvas+borderFill"></a>
 
-### muzzleCanvas.borderFill
+### muzzleCanvas.borderFill : <code>number</code>
 Size of fill. Set null for perfect-match
 
 **Kind**: instance property of [<code>MuzzleCanvas</code>](#MuzzleCanvas)
 <a name="MuzzleCanvas+pieceSize"></a>
 
-### muzzleCanvas.pieceSize
+### muzzleCanvas.pieceSize : <code>number</code>
 Piece size
 
 **Kind**: instance property of [<code>MuzzleCanvas</code>](#MuzzleCanvas)
 <a name="MuzzleCanvas+scaleImageWidthToFit"></a>
 
-### muzzleCanvas.scaleImageWidthToFit
+### muzzleCanvas.scaleImageWidthToFit : <code>boolean</code>
 * Whether image's width should be scaled to piece
 
 **Kind**: instance property of [<code>MuzzleCanvas</code>](#MuzzleCanvas)
-<a name="MuzzleCanvas+previousSolutionJson"></a>
+<a name="MuzzleCanvas+previousSolutionContent"></a>
 
-### muzzleCanvas.previousSolutionJson : <code>string</code>
-The previous solution to the current puzzle in this or a past session,
+### muzzleCanvas.previousSolutionContent : <code>string</code>
+The previous solution to the current puzzle in a past session,
 if any
 
+**Kind**: instance property of [<code>MuzzleCanvas</code>](#MuzzleCanvas)
+<a name="MuzzleCanvas+baseConfig"></a>
+
+### muzzleCanvas.baseConfig
 **Kind**: instance property of [<code>MuzzleCanvas</code>](#MuzzleCanvas)
 <a name="MuzzleCanvas+canvas"></a>
 
@@ -218,6 +226,18 @@ The state of the current puzzle
 expressed as a Solution object
 
 **Kind**: instance property of [<code>MuzzleCanvas</code>](#MuzzleCanvas)
+<a name="MuzzleCanvas+solutionContent"></a>
+
+### muzzleCanvas.solutionContent
+The current solution, expressed as a JSON string
+
+**Kind**: instance property of [<code>MuzzleCanvas</code>](#MuzzleCanvas)
+<a name="MuzzleCanvas+clientResultStatus"></a>
+
+### muzzleCanvas.clientResultStatus ⇒ <code>&quot;passed&quot;</code> \| <code>&quot;failed&quot;</code>
+The solution validation status
+
+**Kind**: instance property of [<code>MuzzleCanvas</code>](#MuzzleCanvas)
 <a name="MuzzleCanvas+onReady"></a>
 
 ### muzzleCanvas.onReady()
@@ -231,7 +251,7 @@ property with any code you need the be called here
 **Kind**: instance method of [<code>MuzzleCanvas</code>](#MuzzleCanvas)
 <a name="MuzzleCanvas+onSubmit"></a>
 
-### muzzleCanvas.onSubmit(solutionJson, valid)
+### muzzleCanvas.onSubmit(submission)
 Callback to be executed when submitting puzzle.
 
 Does nothing by default but you can
@@ -239,11 +259,20 @@ override it to perform additional actions
 
 **Kind**: instance method of [<code>MuzzleCanvas</code>](#MuzzleCanvas)
 
-| Param | Type | Description |
-| --- | --- | --- |
-| solutionJson | <code>string</code> | the solution, as a JSON |
-| valid | <code>boolean</code> | whether this puzzle is valid or nor |
+| Param | Type |
+| --- | --- |
+| submission | <code>Object</code> |
 
+<a name="MuzzleCanvas+onValid"></a>
+
+### muzzleCanvas.onValid()
+Callback that will be executed
+when muzzle's puzzle becomes valid
+
+It does nothing by default but you can override this
+property with any code you need the be called here
+
+**Kind**: instance method of [<code>MuzzleCanvas</code>](#MuzzleCanvas)
 <a name="MuzzleCanvas+draw"></a>
 
 ### muzzleCanvas.draw()
@@ -280,13 +309,15 @@ submitted when solved
 
 <a name="MuzzleCanvas+multi"></a>
 
-### muzzleCanvas.multi(configs) ⇒ <code>Promise.&lt;Canvas&gt;</code>
+### muzzleCanvas.multi(x, y, [imagePaths]) ⇒ <code>Promise.&lt;Canvas&gt;</code>
 **Kind**: instance method of [<code>MuzzleCanvas</code>](#MuzzleCanvas)
 **Returns**: <code>Promise.&lt;Canvas&gt;</code> - the promise of the built canvas
 
 | Param | Type |
 | --- | --- |
-| configs | <code>any</code> |
+| x | <code>number</code> |
+| y | <code>number</code> |
+| [imagePaths] | <code>Array.&lt;string&gt;</code> |
 
 <a name="MuzzleCanvas+match"></a>
 
@@ -324,6 +355,8 @@ and drawing the canvas
 <a name="MuzzleCanvas+loadSolution"></a>
 
 ### muzzleCanvas.loadSolution(solution)
+Loads - but does not draw - a solution into the canvas.
+
 **Kind**: instance method of [<code>MuzzleCanvas</code>](#MuzzleCanvas)
 
 | Param | Type |
@@ -333,7 +366,7 @@ and drawing the canvas
 <a name="MuzzleCanvas+loadPreviousSolution"></a>
 
 ### muzzleCanvas.loadPreviousSolution()
-Loads the current canvas with the
+Loads - but does not draw - the current canvas with the previous solution, if available.
 
 **Kind**: instance method of [<code>MuzzleCanvas</code>](#MuzzleCanvas)
 <a name="MuzzleCanvas+submit"></a>
