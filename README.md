@@ -22,7 +22,7 @@ RACK_ENV=development rackup -p 4567
 > You will need instaling jsdoc-to-markdown first
 >
 > ```bash
-> npm install --global jsdoc-to-markdown`
+> npm install --global jsdoc-to-markdown
 > ```
 
 ```bash
@@ -109,6 +109,15 @@ handling solutions persistence and submitting them</p>
 </dd>
 </dl>
 
+## Functions
+
+<dl>
+<dt><a href="#another">another(id)</a> ⇒ <code><a href="#MuzzleCanvas">MuzzleCanvas</a></code></dt>
+<dd><p>Creates a suplementary canvas at the element
+of the given id</p>
+</dd>
+</dl>
+
 ## Typedefs
 
 <dl>
@@ -134,6 +143,7 @@ handling solutions persistence and submitting them
     * [.canvasWidth](#MuzzleCanvas+canvasWidth) : <code>number</code>
     * [.canvasHeight](#MuzzleCanvas+canvasHeight) : <code>number</code>
     * [.borderFill](#MuzzleCanvas+borderFill) : <code>number</code>
+    * [.strokeWidth](#MuzzleCanvas+strokeWidth) : <code>number</code>
     * [.pieceSize](#MuzzleCanvas+pieceSize) : <code>number</code>
     * [.scaleImageWidthToFit](#MuzzleCanvas+scaleImageWidthToFit) : <code>boolean</code>
     * [.previousSolutionContent](#MuzzleCanvas+previousSolutionContent) : <code>string</code>
@@ -187,6 +197,12 @@ Height of canvas
 
 ### muzzleCanvas.borderFill : <code>number</code>
 Size of fill. Set null for perfect-match
+
+**Kind**: instance property of [<code>MuzzleCanvas</code>](#MuzzleCanvas)
+<a name="MuzzleCanvas+strokeWidth"></a>
+
+### muzzleCanvas.strokeWidth : <code>number</code>
+Canvas line width
 
 **Kind**: instance property of [<code>MuzzleCanvas</code>](#MuzzleCanvas)
 <a name="MuzzleCanvas+pieceSize"></a>
@@ -376,6 +392,18 @@ Submits the puzzle to the bridge,
 validating it if necessary
 
 **Kind**: instance method of [<code>MuzzleCanvas</code>](#MuzzleCanvas)
+<a name="another"></a>
+
+## another(id) ⇒ [<code>MuzzleCanvas</code>](#MuzzleCanvas)
+Creates a suplementary canvas at the element
+of the given id
+
+**Kind**: global function
+
+| Param | Type |
+| --- | --- |
+| id | <code>string</code> |
+
 <a name="PieceConfig"></a>
 
 ## PieceConfig : <code>object</code>
