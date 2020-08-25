@@ -10,11 +10,11 @@
       </div>
       <pre>
         <code>
-          Muzzle.basic(3, 3, './torta_1_sinborde.svg');
+          Muzzle.basic(1, 2, './torta_1_sinborde.svg');
         </code>
       </pre>
       <script>
-        Muzzle.basic(3, 3, './torta_1_sinborde.svg');
+        Muzzle.basic(1, 2, './torta_1_sinborde.svg');
         Muzzle.onSubmit = (solutionJson, valid) => {
           alert('I am going to submit solution');
         };
@@ -46,6 +46,29 @@
           alert('I am going to submit solution');
         };
         solved.onValid = () => {
+          alert('I am valid');
+        };
+      </script>
+    </div>
+
+    <div>
+      <h2>Basic (fixed aspect ratio)</h2>
+      <div id="muzzle-canvas-aspect" >
+      </div>
+      <pre>
+        <code>
+          Muzzle.aspectRatio = 1;
+          Muzzle.basic(1, 2, './torta_1_sinborde.svg');
+        </code>
+      </pre>
+      <script>
+        const aspect = Muzzle.another('muzzle-canvas-aspect');
+        aspect.aspectRatio = 1;
+        aspect.basic(1, 2, './torta_1_sinborde.svg');
+        aspect.onSubmit = (solutionJson, valid) => {
+          alert('I am going to submit solution');
+        };
+        aspect.onValid = () => {
           alert('I am valid');
         };
       </script>
