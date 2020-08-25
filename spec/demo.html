@@ -3,7 +3,7 @@
     <script src="../lib/public/vendor/headbreaker.js"></script>
     <script src="../lib/public/js/muzzle.js"></script>
   </head>
-  <body>
+  <body style="display: grid; grid-template-columns: 50vw 50vw;">
     <div>
       <h2>Basic</h2>
       <div id="muzzle-canvas" >
@@ -19,6 +19,29 @@
           alert('I am going to submit solution');
         };
         Muzzle.onValid = () => {
+          alert('I am valid');
+        };
+      </script>
+    </div>
+
+    <div>
+      <h2>Basic (horizontal)</h2>
+      <div id="muzzle-horizontal" >
+      </div>
+      <pre>
+        <code>
+          Muzzle.pieceSize = 300;
+          Muzzle.basic(3, 1, './torta_1_sinborde.svg');
+        </code>
+      </pre>
+      <script>
+        const horizontal = Muzzle.another('muzzle-horizontal');
+        horizontal.pieceSize = 300;
+        horizontal.basic(3, 1, './torta_1_sinborde.svg');
+        horizontal.onSubmit = (solutionJson, valid) => {
+          alert('I am going to submit solution');
+        };
+        horizontal.onValid = () => {
           alert('I am valid');
         };
       </script>
