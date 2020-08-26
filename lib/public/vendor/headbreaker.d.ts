@@ -43,6 +43,8 @@ declare class Anchor {
  */
 declare function anchor(x: number, y: number): Anchor;
 
+declare type Axis = Vertical | Horizontal;
+
 declare type Label = any;
 
 declare type Figure = {
@@ -86,6 +88,7 @@ declare type CanvasMetadata = {
 
 declare type Template = {
     structure: StructureLike;
+    size?: Size;
     metadata: CanvasMetadata;
 };
 
@@ -99,8 +102,8 @@ declare type Template = {
  * @param [options.image] - an optional background image for the puzzle that will be split across all pieces.
  * @param [options.fixed] - whether the canvas can is fixed or can be dragged
  * @param [options.painter] - the Painter object used to actually draw figures in canvas
- * @param [options.horizontalPiecesMaxCount] - the maximal amount of horizontal pieces used to calculate the maximal width.
- *                                                    You only need to specify this option when pieces are manually sketched and you require this information for image scaling
+ * @param [options.maxPiecesCount] - the maximal amount of pieces used to calculate the maximal width and height.
+ *                                                                    You only need to specify this option when pieces are manually sketched and you require this information for image scaling
  */
 declare class Canvas {
     constructor(id: string, options: {
@@ -115,9 +118,10 @@ declare class Canvas {
         image?: ImageLike;
         fixed?: boolean;
         painter?: Painter;
-        horizontalPiecesMaxCount?: number;
+        maxPiecesCount?: Vector | number;
     });
     _painter: Painter;
+    _maxPiecesCount: Vector;
     _imageAdjuster: any;
     _puzzle: Puzzle;
     figures: {
@@ -233,6 +237,10 @@ declare class Canvas {
      * Sets the new width and height of the canvas
      */
     resize(width: number, height: number): void;
+    /**
+     * Scales the canvas contents to the given factor
+     */
+    scale(factor: Vector | number): void;
     _annotatePiecePosition(piece: Piece): void;
     /**
      * Configures updates from piece into group
@@ -245,14 +253,34 @@ declare class Canvas {
     _baseImageMetadataFor(piece: Piece): ImageMetadata;
     imageMetadataFor(piece: Piece): ImageMetadata;
     /**
+     * Configures canvas to adjust images axis to puzzle's axis
+     */
+    adjustImagesToPuzzle(axis: Axis): void;
+    /**
      * Configures canvas to adjust images width to puzzle's width
      */
     adjustImagesToPuzzleWidth(): void;
     /**
+     * Configures canvas to adjust images height to puzzle's height
+     */
+    adjustImagesToPuzzleHeight(): void;
+    /**
+     * Configures canvas to adjust images axis to pieces's axis
+     */
+    adjustImagesToPiece(axis: Axis): void;
+    /**
      * Configures canvas to adjust images width to pieces's width
      */
     adjustImagesToPieceWidth(): void;
-    _newPiece(structureLike: StructureLike, metadata: CanvasMetadata): void;
+    /**
+     * Configures canvas to adjust images height to pieces's height
+     */
+    adjustImagesToPieceHeight(): void;
+    /**
+     * @param structureLike - the piece structure
+     */
+    _newPiece(structureLike: StructureLike, size: Size, metadata: CanvasMetadata): void;
+    puzzleDiameter: Vector;
     pieceRadio: Vector;
     pieceDiameter: Vector;
     /**
@@ -304,9 +332,11 @@ declare interface KonvaPainter extends Painter {
  */
 declare class KonvaPainter implements Painter {
     initialize(canvas: Canvas, id: string): void;
+    _initializeLayer(stage: any, canvas: any): void;
     draw(canvas: Canvas): void;
     reinitialize(canvas: Canvas): void;
     resize(canvas: Canvas, width: number, height: number): void;
+    scale(canvas: Canvas, factor: Vector): void;
     sketch(canvas: Canvas, piece: Piece, figure: Figure): void;
     label(_canvas: Canvas, piece: Piece, figure: Figure): void;
     physicalTranslate(_canvas: Canvas, group: Group, piece: Piece): void;
@@ -397,6 +427,10 @@ declare interface Painter {
      * Draws the canvas figures in the rendering backend
      */
     draw(canvas: Canvas): void;
+    /**
+     * Scales the canvas contents
+     */
+    scale(canvas: Canvas, factor: Vector): void;
     /**
      * Adds a piece to the rendering backend, so that it is ready to be drawn
      * @param figure - the rendering backend information for this piece. This method may mutate it if necessary
@@ -638,10 +672,11 @@ declare class Puzzle {
     validator: Validator;
     /**
      * Creates and adds to this puzzle a new piece
-     * @param [options] - the piece structure
+     * @param [structure] - the piece structure
+     * @param [config] - the piece config
      * @returns the new piece
      */
-    newPiece(options?: Structure): Piece;
+    newPiece(structure?: Structure, config?: PieceConfig): Piece;
     addPiece(piece: Piece): void;
     addPieces(pieces: Piece[]): void;
     /**
