@@ -98,6 +98,31 @@
     </div>
 
     <div>
+      <h2>Basic (vertical fit)</h2>
+      <div id="muzzle-canvas-vertical-fit" >
+      </div>
+      <pre>
+        <code>
+          Muzzle.aspectRatio = 1;
+          Muzzle.fitImagesVertically = true;
+          Muzzle.basic(1, 2, './torta_1_sinborde.svg');
+        </code>
+      </pre>
+      <script>
+        const verticalFit = Muzzle.another('muzzle-canvas-vertical-fit');
+        verticalFit.aspectRatio = 1;
+        verticalFit.fitImagesVertically = true;
+        verticalFit.basic(1, 2, './torta_1_sinborde.svg');
+        verticalFit.onSubmit = (solutionJson, valid) => {
+          alert('I am going to submit solution');
+        };
+        verticalFit.onValid = () => {
+          alert('I am valid');
+        };
+      </script>
+    </div>
+
+    <div>
       <h2>Match</h2>
       <div id="muzzle-canvas-match" >
       </div>
