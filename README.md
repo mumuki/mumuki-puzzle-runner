@@ -29,6 +29,10 @@ RACK_ENV=development rackup -p 4567
 jsdoc2md lib/public/js/muzzle.js 2>&1
 ```
 
+# Live examples
+
+You can see live examples [here](https://mumuki.github.io/mumuki-puzzle-runner/docs/) :confetti_ball:
+
 # Test format
 
 ## Basic puzzle
