@@ -66,8 +66,30 @@
         </script>
       </div>
 
+
       <div class="sample">
-        <h2>Basic (solved)</h2>
+        <h2>Basic (squared)</h2>
+        <div id="muzzle-canvas-squared" >
+        </div>
+        <pre>
+          <code>
+            Muzzle.basic(3, 3, './torta_1_sinborde.svg')
+          </code>
+        </pre>
+        <script>
+          const squared = Muzzle.another('muzzle-canvas-squared');
+          squared.basic(3, 3, './torta_1_sinborde.svg');
+          squared.onSubmit = (solutionJson, valid) => {
+            alert('I am going to submit solution');
+          };
+          squared.onValid = () => {
+            alert('I am valid');
+          };
+        </script>
+      </div>
+
+      <div class="sample">
+        <h2>Basic 3x3 (solved)</h2>
         <div id="muzzle-canvas-solved" >
         </div>
         <pre>
