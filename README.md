@@ -29,6 +29,10 @@ RACK_ENV=development rackup -p 4567
 jsdoc2md lib/public/js/muzzle.js 2>&1
 ```
 
+# Live examples
+
+You can see live examples [here](https://mumuki.github.io/mumuki-puzzle-runner/docs/) :confetti_ball:
+
 # Test format
 
 ## Basic puzzle
@@ -145,9 +149,11 @@ handling solutions persistence and submitting them
     * [.borderFill](#MuzzleCanvas+borderFill) : <code>number</code>
     * [.strokeWidth](#MuzzleCanvas+strokeWidth) : <code>number</code>
     * [.pieceSize](#MuzzleCanvas+pieceSize) : <code>number</code>
-    * [.scaleImageWidthToFit](#MuzzleCanvas+scaleImageWidthToFit) : <code>boolean</code>
+    * [.aspectRatio](#MuzzleCanvas+aspectRatio) : <code>number</code>
+    * [.fitImagesVertically](#MuzzleCanvas+fitImagesVertically) : <code>boolean</code>
     * [.previousSolutionContent](#MuzzleCanvas+previousSolutionContent) : <code>string</code>
     * [.baseConfig](#MuzzleCanvas+baseConfig)
+    * [.imageAdjustmentAxis](#MuzzleCanvas+imageAdjustmentAxis) : <code>Axis</code>
     * [.canvas](#MuzzleCanvas+canvas) ⇒ <code>Canvas</code>
     * [.solution](#MuzzleCanvas+solution) ⇒ [<code>Solution</code>](#Solution)
     * [.solutionContent](#MuzzleCanvas+solutionContent)
@@ -211,10 +217,18 @@ Canvas line width
 Piece size
 
 **Kind**: instance property of [<code>MuzzleCanvas</code>](#MuzzleCanvas)
-<a name="MuzzleCanvas+scaleImageWidthToFit"></a>
+<a name="MuzzleCanvas+aspectRatio"></a>
 
-### muzzleCanvas.scaleImageWidthToFit : <code>boolean</code>
-* Whether image's width should be scaled to piece
+### muzzleCanvas.aspectRatio : <code>number</code>
+The x:y aspect ratio of the piece. Set null for automatic
+aspectRatio
+
+**Kind**: instance property of [<code>MuzzleCanvas</code>](#MuzzleCanvas)
+<a name="MuzzleCanvas+fitImagesVertically"></a>
+
+### muzzleCanvas.fitImagesVertically : <code>boolean</code>
+If the images should be adjusted vertically instead of horizontally
+to puzzle dimensions. `false` by default
 
 **Kind**: instance property of [<code>MuzzleCanvas</code>](#MuzzleCanvas)
 <a name="MuzzleCanvas+previousSolutionContent"></a>
@@ -227,6 +241,10 @@ if any
 <a name="MuzzleCanvas+baseConfig"></a>
 
 ### muzzleCanvas.baseConfig
+**Kind**: instance property of [<code>MuzzleCanvas</code>](#MuzzleCanvas)
+<a name="MuzzleCanvas+imageAdjustmentAxis"></a>
+
+### muzzleCanvas.imageAdjustmentAxis : <code>Axis</code>
 **Kind**: instance property of [<code>MuzzleCanvas</code>](#MuzzleCanvas)
 <a name="MuzzleCanvas+canvas"></a>
 

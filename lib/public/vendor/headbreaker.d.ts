@@ -28,20 +28,22 @@ declare class Anchor {
     /**
      * Converts this anchor into a point
      */
-    asPoint(): Pair;
+    asPair(): Pair;
     /**
-     * Converts this anchor into a position
+     * Converts this anchor into a vector
      */
-    asPosition(): Position;
-    export(): Position;
+    asVector(): Vector;
+    export(): Vector;
     static atRandom(maxX: number, maxY: number): Anchor;
-    static import(position: Position): Anchor;
+    static import(vector: Vector): Anchor;
 }
 
 /**
  * Creates a new {@link Anchor}
  */
 declare function anchor(x: number, y: number): Anchor;
+
+declare type Axis = Vertical | Horizontal;
 
 declare type Label = any;
 
@@ -76,8 +78,8 @@ declare type LabelMetadata = {
 
 declare type CanvasMetadata = {
     id?: string;
-    targetPosition?: Position;
-    currentPosition?: Position;
+    targetPosition?: Vector;
+    currentPosition?: Vector;
     color?: string;
     strokeColor?: string;
     image?: ImageLike;
@@ -86,6 +88,7 @@ declare type CanvasMetadata = {
 
 declare type Template = {
     structure: StructureLike;
+    size?: Size;
     metadata: CanvasMetadata;
 };
 
@@ -93,25 +96,33 @@ declare type Template = {
  * An HTML graphical area where puzzles and pieces can be rendered. No assumption of the rendering backend is done - it may be
  * and be a plain HTML SVG or canvas element, or a higher-level library - and this task is fully delegated to {@link Painter}
  * @param id - the html id of the element where to place the canvas
+ * @param [options.pieceSize] - the piece size expresed as it edge-to-edge diameter
  * @param [options.borderFill] - the broder fill of the pieces, expresed in pixels. 0 means no border fill, 0.5 * pieceSize means full fill
  * @param [options.lineSoftness] - how soft the line will be
  * @param [options.image] - an optional background image for the puzzle that will be split across all pieces.
+ * @param [options.fixed] - whether the canvas can is fixed or can be dragged
  * @param [options.painter] - the Painter object used to actually draw figures in canvas
+ * @param [options.maxPiecesCount] - the maximal amount of pieces used to calculate the maximal width and height.
+ *                                                                    You only need to specify this option when pieces are manually sketched and you require this information for image scaling
  */
 declare class Canvas {
     constructor(id: string, options: {
         width: number;
         height: number;
-        pieceSize?: number;
+        pieceSize?: Vector | number;
         proximity?: number;
-        borderFill?: number;
+        borderFill?: Vector | number;
         strokeWidth?: number;
         strokeColor?: string;
         lineSoftness?: number;
         image?: ImageLike;
+        fixed?: boolean;
         painter?: Painter;
+        maxPiecesCount?: Vector | number;
     });
     _painter: Painter;
+    _maxPiecesCount: Vector;
+    _imageAdjuster: any;
     _puzzle: Puzzle;
     figures: {
         [key: string]: Figure;
@@ -133,7 +144,7 @@ declare class Canvas {
     renderPieces(pieces: Piece[]): void;
     /**
      * Renders a previously created puzzle object. This method
-     * overrides this canvas' {@link Canvas#pieceSize} and {@link Canvas#proximity}
+     * overrides this canvas' {@link Canvas#pieceDiameter} and {@link Canvas#proximity}
      */
     renderPuzzle(puzzle: Puzzle): void;
     /**
@@ -157,7 +168,7 @@ declare class Canvas {
      */
     sketchPieceUsingTemplate(id: string, templateName: string): void;
     /**
-     * @param farness - from 0 to 1, how far pieces will be placed from x = pieceSize, y = pieceSize
+     * @param farness - from 0 to 1, how far pieces will be placed from x = pieceDiameter.x, y = pieceDiameter.y
      */
     shuffle(farness?: number): void;
     /**
@@ -222,6 +233,14 @@ declare class Canvas {
      * Answers the visual representation for the given piece id.
      */
     getFigureById(id: string): Figure;
+    /**
+     * Sets the new width and height of the canvas
+     */
+    resize(width: number, height: number): void;
+    /**
+     * Scales the canvas contents to the given factor
+     */
+    scale(factor: Vector | number): void;
     _annotatePiecePosition(piece: Piece): void;
     /**
      * Configures updates from piece into group
@@ -231,8 +250,39 @@ declare class Canvas {
      * * Configures updates from group into piece
      */
     _bindPieceToGroup(piece: Piece, group: Group): void;
-    _imageMetadataFor(model: Piece): ImageMetadata;
-    _newPiece(structureLike: StructureLike, metadata: CanvasMetadata): void;
+    _baseImageMetadataFor(piece: Piece): ImageMetadata;
+    imageMetadataFor(piece: Piece): ImageMetadata;
+    /**
+     * Configures canvas to adjust images axis to puzzle's axis
+     */
+    adjustImagesToPuzzle(axis: Axis): void;
+    /**
+     * Configures canvas to adjust images width to puzzle's width
+     */
+    adjustImagesToPuzzleWidth(): void;
+    /**
+     * Configures canvas to adjust images height to puzzle's height
+     */
+    adjustImagesToPuzzleHeight(): void;
+    /**
+     * Configures canvas to adjust images axis to pieces's axis
+     */
+    adjustImagesToPiece(axis: Axis): void;
+    /**
+     * Configures canvas to adjust images width to pieces's width
+     */
+    adjustImagesToPieceWidth(): void;
+    /**
+     * Configures canvas to adjust images height to pieces's height
+     */
+    adjustImagesToPieceHeight(): void;
+    /**
+     * @param structureLike - the piece structure
+     */
+    _newPiece(structureLike: StructureLike, size: Size, metadata: CanvasMetadata): void;
+    puzzleDiameter: Vector;
+    pieceRadio: Vector;
+    pieceDiameter: Vector;
     /**
      * The puzzle rendered by this canvas
      */
@@ -254,7 +304,7 @@ declare class DummyPainter implements Painter {
 
 declare type ImageMetadata = {
     content: HTMLImageElement;
-    offset?: Position;
+    offset?: Vector;
     scale?: number;
 };
 
@@ -282,8 +332,11 @@ declare interface KonvaPainter extends Painter {
  */
 declare class KonvaPainter implements Painter {
     initialize(canvas: Canvas, id: string): void;
+    _initializeLayer(stage: any, canvas: any): void;
     draw(canvas: Canvas): void;
     reinitialize(canvas: Canvas): void;
+    resize(canvas: Canvas, width: number, height: number): void;
+    scale(canvas: Canvas, factor: Vector): void;
     sketch(canvas: Canvas, piece: Piece, figure: Figure): void;
     label(_canvas: Canvas, piece: Piece, figure: Figure): void;
     physicalTranslate(_canvas: Canvas, group: Group, piece: Piece): void;
@@ -326,6 +379,8 @@ declare class Manufacturer {
 
 declare class Positioner {
     constructor(puzzle: Puzzle, headAnchor: Anchor);
+    initializeOffset(headAnchor: Anchor): void;
+    offset: Vector;
     naturalAnchor(x: number, y: number): void;
 }
 
@@ -344,7 +399,7 @@ declare module "Metadata" {
  */
 declare module "Outline" {
     function select(insert: Insert, t: number, s: number, n: number): void;
-    function draw(piece: Piece, size?: number): number[];
+    function draw(piece: Piece, size?: Vector | number, borderFill?: Vector | number): number[];
 }
 
 declare type VectorAction = (dx: number, dy: number) => void;
@@ -356,6 +411,7 @@ declare type Action = () => void;
  * order to create UI representations of a puzzle.
  */
 declare interface Painter {
+    resize(canvas: Canvas, width: number, height: number): void;
     /**
      * Creates the rendering backend, initializig all its contents.
      * After this call, painter is ready to receive any other messages
@@ -371,6 +427,10 @@ declare interface Painter {
      * Draws the canvas figures in the rendering backend
      */
     draw(canvas: Canvas): void;
+    /**
+     * Scales the canvas contents
+     */
+    scale(canvas: Canvas, factor: Vector): void;
     /**
      * Adds a piece to the rendering backend, so that it is ready to be drawn
      * @param figure - the rendering backend information for this piece. This method may mutate it if necessary
@@ -404,7 +464,10 @@ declare module "Pair" {
      * Tells whether this pair is (0, 0)
      */
     function isNull(x: number, y: number): boolean;
-    function equal(x1: number, y1: number, x2: number, y2: number): boolean;
+    /**
+     * @param [delta = 0] - tolerance in comparison
+     */
+    function equal(x1: number, y1: number, x2: number, y2: number, delta?: number): boolean;
     /**
      * Calculates the difference of two vectors
      */
@@ -415,25 +478,39 @@ declare type TranslationListener = (piece: Piece, dx: number, dy: number) => voi
 
 declare type ConnectionListener = (piece: Piece, target: Piece) => void;
 
+declare type PieceConfig = {
+    centralAnchor?: Vector;
+    size?: Size;
+    metadata?: any;
+};
+
 /**
  * A piece primitive representation that can be easily stringified, exchanged and persisted
  */
 declare type PieceDump = {
-    centralAnchor: Position;
-    structure: string;
-    connections?: Orthogonal<object>;
+    centralAnchor: Vector;
+    size?: Size;
     metadata: any;
+    connections?: Orthogonal<object>;
+    structure: string;
 };
 
 /**
  * A jigsaw piece
  */
 declare class Piece {
-    constructor(options?: Structure);
+    constructor(structure?: Structure, config?: PieceConfig);
+    metadata: any;
     centralAnchor: Anchor;
+    _size: Size;
     translateListeners: TranslationListener[];
     connectListeners: ConnectionListener[];
     disconnectListeners: ConnectionListener[];
+    /**
+     * Runs positining, sizing and metadata configurations
+     * in a single step
+     */
+    configure(config: PieceConfig): void;
     /**
      * Adds unestructured user-defined metadata on this piece.
      */
@@ -523,7 +600,16 @@ declare class Piece {
     rightAnchor: Anchor;
     upAnchor: Anchor;
     leftAnchor: Anchor;
-    size: number;
+    /**
+     * Defines this piece's own dimmension, overriding puzzle's
+     * default dimmension
+     */
+    resize(size: Size): void;
+    radio: Vector;
+    /**
+     * The double of the radio
+     */
+    diameter: Vector;
     proximity: number;
     /**
      * This piece id. It is extracted from metadata
@@ -541,37 +627,6 @@ declare class Piece {
      * after importing all them
      */
     static import(dump: PieceDump): Piece;
-}
-
-declare type Position = {
-    x: number;
-    y: number;
-};
-
-declare function position(x: number, y: number): Position;
-
-/**
- * This module contains functions for dealing with objects with x and y
- * coordinates that represent or include point data
- */
-declare module "Position" {
-    /**
-     * Returns a new (0, 0) position
-     */
-    function origin(): Position;
-    /**
-     * Compares two points
-     */
-    function equal(one: Position, other: Position): boolean;
-    /**
-     * Creates a copy of the given point
-     */
-    function copy(one: Position): Position;
-    function update(position: Position, x: any, y: any): void;
-    /**
-     * @returns ;
-     */
-    function diff(one: Position, other: Position): Pair;
 }
 
 declare type Orthogonal = {
@@ -597,13 +652,13 @@ declare module "Prelude" {
  * A puzzle primitive representation that can be easily stringified, exchanged and persisted
  */
 declare type PuzzleDump = {
-    pieceSize: number;
+    pieceRadio: Vector;
     proximity: number;
     pieces: PieceDump[];
 };
 
 declare type Settings = {
-    pieceSize?: number;
+    pieceRadio?: Vector | number;
     proximity?: number;
 };
 
@@ -617,10 +672,11 @@ declare class Puzzle {
     validator: Validator;
     /**
      * Creates and adds to this puzzle a new piece
-     * @param [options] - the piece structure
+     * @param [structure] - the piece structure
+     * @param [config] - the piece config
      * @returns the new piece
      */
-    newPiece(options?: Structure): Piece;
+    newPiece(structure?: Structure, config?: PieceConfig): Piece;
     addPiece(piece: Piece): void;
     addPieces(pieces: Piece[]): void;
     /**
@@ -701,9 +757,13 @@ declare class Puzzle {
     connected: boolean;
     /**
      * The piece width, from edge to edge.
-     * This is the double of the {@link Puzzle#pieceSize}
+     * This is the double of the {@link Puzzle#pieceRadio}
      */
-    pieceWidth: number;
+    pieceDiameter: Vector;
+    /**
+     * The piece width, from center to edge
+     */
+    pieceRadio: Vector;
     /**
      * Converts this piece into a plain, stringify-ready object.
      * Pieces should have ids
@@ -758,9 +818,18 @@ declare module "sequence" {
     }
 }
 
+declare type Size = {
+    radio: Vector;
+    diameter: Vector;
+};
+
+declare function radio(value: Vector | number): Size;
+
+declare function diameter(value: Vector | number): Size;
+
 declare type SpatialMetadata = {
-    targetPosition?: Position;
-    currentPosition?: Position;
+    targetPosition?: Vector;
+    currentPosition?: Vector;
 };
 
 /**
@@ -768,10 +837,11 @@ declare type SpatialMetadata = {
  * and pieces and puzzles that are annotated with it
  */
 declare module "SpatialMetadata" {
+    function diffToTarget(piece: Piece): void;
     function solved(): void;
     function relativePosition(): void;
     function absolutePosition(): void;
-    function initialize(metadata: SpatialMetadata, target: Position, current?: Position): void;
+    function initialize(metadata: SpatialMetadata, target: Vector, current?: Vector): void;
 }
 
 declare type Structure = {
@@ -850,5 +920,44 @@ declare class PuzzleValidator {
 declare class NullValidator {
     isValid(puzzle: Puzzle): void;
     isNull: boolean;
+}
+
+declare type Vector = {
+    x: number;
+    y: number;
+};
+
+declare function vector(x: number, y: number): Vector;
+
+declare function cast(value: Vector | number): Vector;
+
+/**
+ * This module contains functions for dealing with objects with x and y
+ * coordinates that represent or include point data
+ */
+declare module "Vector" {
+    /**
+     * Returns a new (0, 0) vector
+     */
+    function zero(): Vector;
+    /**
+     * Compares two points
+     * @param [delta = 0] - the tolance in comparison
+     */
+    function equal(one: Vector, other: Vector, delta?: number): boolean;
+    /**
+     * Creates a copy of the given point
+     */
+    function copy(one: Vector): Vector;
+    function update(vector: Vector, x: any, y: any): void;
+    /**
+     * @returns ;
+     */
+    function diff(one: Vector, other: Vector): Pair;
+    function multiply(one: Vector | number, other: Vector | number): Vector;
+    function divide(one: Vector | number, other: Vector | number): Vector;
+    function plus(one: Vector | number, other: Vector | number): Vector;
+    function minus(one: Vector | number, other: Vector | number): Vector;
+    function apply(one: Vector | number, other: Vector | number, f: any): Vector;
 }
 
