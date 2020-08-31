@@ -205,6 +205,21 @@
           };
         </script>
       </div>
+
+      <div class="sample">
+        <h2>Try</h2>
+        <div id="muzzle-canvas-try" >
+        </div>
+        <textarea id="try" rows="20" cols="40" style="display: block;">Muzzle.basic(1, 2, './torta_1_sinborde.svg');</textarea>
+        <button id="try-button">Try!</button>
+        <script>
+          const area = document.getElementById("try");
+          document.getElementById("try-button").addEventListener("click", function () {
+            const Muzzle = window.Muzzle.another('muzzle-canvas-try');
+            eval(area.value);
+          })
+        </script>
+      </div>
     </div>
   </body>
 </html>
