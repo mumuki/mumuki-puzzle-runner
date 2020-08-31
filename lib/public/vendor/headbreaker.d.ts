@@ -81,6 +81,7 @@ declare type CanvasMetadata = {
     targetPosition?: Vector;
     currentPosition?: Vector;
     color?: string;
+    fixed?: boolean;
     strokeColor?: string;
     image?: ImageLike;
     label?: LabelMetadata;
@@ -102,8 +103,10 @@ declare type Template = {
  * @param [options.image] - an optional background image for the puzzle that will be split across all pieces.
  * @param [options.fixed] - whether the canvas can is fixed or can be dragged
  * @param [options.painter] - the Painter object used to actually draw figures in canvas
+ * @param [options.puzzleDiameter] - the puzzle diameter used to calculate the maximal width and height
+ *                                                                    You only need to specify this option when pieces are manually sketched and images must be adjusted
  * @param [options.maxPiecesCount] - the maximal amount of pieces used to calculate the maximal width and height.
- *                                                                    You only need to specify this option when pieces are manually sketched and you require this information for image scaling
+ *                                                                    You only need to specify this option when pieces are manually sketched and images must be adjusted
  */
 declare class Canvas {
     constructor(id: string, options: {
@@ -118,10 +121,12 @@ declare class Canvas {
         image?: ImageLike;
         fixed?: boolean;
         painter?: Painter;
+        puzzleDiameter?: Vector | number;
         maxPiecesCount?: Vector | number;
     });
     _painter: Painter;
     _maxPiecesCount: Vector;
+    _puzzleDiameter: Vector;
     _imageAdjuster: any;
     _puzzle: Puzzle;
     figures: {
@@ -171,6 +176,14 @@ declare class Canvas {
      * @param farness - from 0 to 1, how far pieces will be placed from x = pieceDiameter.x, y = pieceDiameter.y
      */
     shuffle(farness?: number): void;
+    /**
+     * **Warning**: this method requires {@code maxPiecesCount} to be set.
+     */
+    shuffleColumns(farness?: number): void;
+    /**
+     * **Warning**: this method requires {@code maxPiecesCount} to be set.
+     */
+    shuffleGrid(farness?: number): void;
     /**
      * Draws this canvas for the first time
      */
@@ -253,34 +266,54 @@ declare class Canvas {
     _baseImageMetadataFor(piece: Piece): ImageMetadata;
     imageMetadataFor(piece: Piece): ImageMetadata;
     /**
-     * Configures canvas to adjust images axis to puzzle's axis
+     * Configures canvas to adjust images axis to puzzle's axis.
+     *
+     * **Warning**: this method requires {@code maxPiecesCount} or {@code puzzleDiameter} to be set.
      */
     adjustImagesToPuzzle(axis: Axis): void;
     /**
      * Configures canvas to adjust images width to puzzle's width
+     *
+     * **Warning**: this method requires {@code maxPiecesCount} or {@code puzzleDiameter} to be set.
      */
     adjustImagesToPuzzleWidth(): void;
     /**
      * Configures canvas to adjust images height to puzzle's height
+     *
+     * **Warning**: this method requires {@code maxPiecesCount} or {@code puzzleDiameter} to be set.
      */
     adjustImagesToPuzzleHeight(): void;
     /**
      * Configures canvas to adjust images axis to pieces's axis
+     *
+     * **Warning**: this method requires {@code maxPiecesCount} or {@code puzzleDiameter} to be set.
      */
     adjustImagesToPiece(axis: Axis): void;
     /**
      * Configures canvas to adjust images width to pieces's width
+     *
+     * **Warning**: this method requires {@code maxPiecesCount} or {@code puzzleDiameter} to be set.
      */
     adjustImagesToPieceWidth(): void;
     /**
      * Configures canvas to adjust images height to pieces's height
+     *
+     * **Warning**: this method requires {@code maxPiecesCount} or {@code puzzleDiameter} to be set.
      */
     adjustImagesToPieceHeight(): void;
     /**
      * @param structureLike - the piece structure
      */
     _newPiece(structureLike: StructureLike, size: Size, metadata: CanvasMetadata): void;
+    /**
+     * The puzzle diameter, using the
+     * configured puzzle diameter or the estimated one, if the first is not available.
+     */
     puzzleDiameter: Vector;
+    /**
+     * The estimated puzzle diameter calculated using the the max pieces count.
+     */
+    estimatedPuzzleDiameter: Vector;
     pieceRadio: Vector;
     pieceDiameter: Vector;
     /**
@@ -332,7 +365,6 @@ declare interface KonvaPainter extends Painter {
  */
 declare class KonvaPainter implements Painter {
     initialize(canvas: Canvas, id: string): void;
-    _initializeLayer(stage: any, canvas: any): void;
     draw(canvas: Canvas): void;
     reinitialize(canvas: Canvas): void;
     resize(canvas: Canvas, width: number, height: number): void;
@@ -702,6 +734,7 @@ declare class Puzzle {
      */
     autoconnectWith(piece: Piece): void;
     shuffle(maxX: number, maxY: number): void;
+    shuffleWith(shuffler: Shuffler): void;
     translate(dx: number, dy: number): void;
     onTranslate(f: TranslationListener): void;
     onConnect(f: ConnectionListener): void;
@@ -817,6 +850,18 @@ declare module "sequence" {
         next(): Insert;
     }
 }
+
+declare function random(maxX: number, maxY: number): Shuffler;
+
+declare function grid(): void;
+
+declare function columns(): void;
+
+declare function padder(padding: number, width: number, height: number): Shuffler;
+
+declare function noise(maxDistance: Vector): Shuffler;
+
+declare function noop(): void;
 
 declare type Size = {
     radio: Vector;

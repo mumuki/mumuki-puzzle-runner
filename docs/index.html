@@ -3,133 +3,190 @@
     <script src="../lib/public/vendor/headbreaker.js"></script>
     <script src="../lib/public/js/muzzle.js"></script>
   </head>
-  <body style="display: grid; grid-template-columns: 50vw 50vw;">
-    <div>
-      <h2>Basic</h2>
-      <div id="muzzle-canvas" >
-      </div>
-      <pre>
+  <style>
+    canvas {
+      border: 1px solid navy !important;
+    }
+
+    .sample {
+      margin: 10px;
+    }
+
+    .wrapper {
+      display: grid;
+      grid-template-columns: 50% 50%;
+    }
+
+    pre {
+      overflow: auto;
+    }
+  </style>
+  <body>
+    <div class="wrapper">
+      <div class="sample">
+        <h2>Basic</h2>
+        <div id="muzzle-canvas" >
+        </div>
+        <pre>
         <code>
           Muzzle.basic(1, 2, './torta_1_sinborde.svg');
         </code>
-      </pre>
-      <script>
-        Muzzle.basic(1, 2, './torta_1_sinborde.svg');
-        Muzzle.onSubmit = (solutionJson, valid) => {
-          alert('I am going to submit solution');
-        };
-        Muzzle.onValid = () => {
-          alert('I am valid');
-        };
-      </script>
-    </div>
-
-    <div>
-      <h2>Basic (horizontal)</h2>
-      <div id="muzzle-horizontal" >
+        </pre>
+        <script>
+          Muzzle.basic(1, 2, './torta_1_sinborde.svg');
+          Muzzle.onSubmit = (solutionJson, valid) => {
+            alert('I am going to submit solution');
+          };
+          Muzzle.onValid = () => {
+            alert('I am valid');
+          };
+        </script>
       </div>
-      <pre>
-        <code>
-          Muzzle.pieceSize = 300;
-          Muzzle.basic(3, 1, './torta_1_sinborde.svg');
-        </code>
-      </pre>
-      <script>
-        const horizontal = Muzzle.another('muzzle-horizontal');
-        horizontal.pieceSize = 300;
-        horizontal.basic(3, 1, './torta_1_sinborde.svg');
-        horizontal.onSubmit = (solutionJson, valid) => {
-          alert('I am going to submit solution');
-        };
-        horizontal.onValid = () => {
-          alert('I am valid');
-        };
-      </script>
-    </div>
 
-    <div>
-      <h2>Basic (solved)</h2>
-      <div id="muzzle-canvas-solved" >
+      <div class="sample">
+        <h2>Basic (horizontal)</h2>
+        <div id="muzzle-horizontal" >
+        </div>
+        <pre>
+          <code>
+            Muzzle.pieceSize = 300;
+            Muzzle.basic(3, 1, './torta_1_sinborde.svg');
+          </code>
+        </pre>
+        <script>
+          const horizontal = Muzzle.another('muzzle-horizontal');
+          horizontal.pieceSize = 300;
+          horizontal.basic(3, 1, './torta_1_sinborde.svg');
+          horizontal.onSubmit = (solutionJson, valid) => {
+            alert('I am going to submit solution');
+          };
+          horizontal.onValid = () => {
+            alert('I am valid');
+          };
+        </script>
       </div>
-      <pre>
-        <code>
-          Muzzle.basic(3, 3, './torta_1_sinborde.svg').then(it => {
+
+
+      <div class="sample">
+        <h2>Basic (squared)</h2>
+        <div id="muzzle-canvas-squared" >
+        </div>
+        <pre>
+          <code>
+            Muzzle.basic(3, 3, './torta_1_sinborde.svg')
+          </code>
+        </pre>
+        <script>
+          const squared = Muzzle.another('muzzle-canvas-squared');
+          squared.basic(3, 3, './torta_1_sinborde.svg');
+          squared.onSubmit = (solutionJson, valid) => {
+            alert('I am going to submit solution');
+          };
+          squared.onValid = () => {
+            alert('I am valid');
+          };
+        </script>
+      </div>
+
+      <div class="sample">
+        <h2>Basic 3x3 (solved)</h2>
+        <div id="muzzle-canvas-solved" >
+        </div>
+        <pre>
+          <code>
+            Muzzle.basic(3, 3, './torta_1_sinborde.svg').then(it => {
+              it.solve();
+              it.redraw();
+            });
+          </code>
+        </pre>
+        <script>
+          const solved = Muzzle.another('muzzle-canvas-solved');
+          solved.basic(3, 3, './torta_1_sinborde.svg').then(it => {
             it.solve();
             it.redraw();
           });
-        </code>
-      </pre>
-      <script>
-        const solved = Muzzle.another('muzzle-canvas-solved');
-        solved.basic(3, 3, './torta_1_sinborde.svg').then(it => {
-          it.solve();
-          it.redraw();
-        });
-        solved.onSubmit = (solutionJson, valid) => {
-          alert('I am going to submit solution');
-        };
-        solved.onValid = () => {
-          alert('I am valid');
-        };
-      </script>
-    </div>
-
-    <div>
-      <h2>Basic (fixed aspect ratio)</h2>
-      <div id="muzzle-canvas-aspect" >
+          solved.onSubmit = (solutionJson, valid) => {
+            alert('I am going to submit solution');
+          };
+          solved.onValid = () => {
+            alert('I am valid');
+          };
+        </script>
       </div>
-      <pre>
-        <code>
-          Muzzle.aspectRatio = 1;
-          Muzzle.basic(1, 2, './torta_1_sinborde.svg');
-        </code>
-      </pre>
-      <script>
-        const aspect = Muzzle.another('muzzle-canvas-aspect');
-        aspect.aspectRatio = 1;
-        aspect.basic(1, 2, './torta_1_sinborde.svg');
-        aspect.onSubmit = (solutionJson, valid) => {
-          alert('I am going to submit solution');
-        };
-        aspect.onValid = () => {
-          alert('I am valid');
-        };
-      </script>
-    </div>
 
-    <div>
-      <h2>Basic (vertical fit)</h2>
-      <div id="muzzle-canvas-vertical-fit" >
+      <div class="sample">
+        <h2>Basic (fixed aspect ratio)</h2>
+        <div id="muzzle-canvas-aspect" >
+        </div>
+        <pre>
+          <code>
+            Muzzle.aspectRatio = 1;
+            Muzzle.basic(1, 2, './torta_1_sinborde.svg');
+          </code>
+        </pre>
+        <script>
+          const aspect = Muzzle.another('muzzle-canvas-aspect');
+          aspect.aspectRatio = 1;
+          aspect.basic(1, 2, './torta_1_sinborde.svg');
+          aspect.onSubmit = (solutionJson, valid) => {
+            alert('I am going to submit solution');
+          };
+          aspect.onValid = () => {
+            alert('I am valid');
+          };
+        </script>
       </div>
-      <pre>
-        <code>
-          Muzzle.aspectRatio = 1;
-          Muzzle.fitImagesVertically = true;
-          Muzzle.basic(1, 2, './torta_1_sinborde.svg');
-        </code>
-      </pre>
-      <script>
-        const verticalFit = Muzzle.another('muzzle-canvas-vertical-fit');
-        verticalFit.aspectRatio = 1;
-        verticalFit.fitImagesVertically = true;
-        verticalFit.basic(1, 2, './torta_1_sinborde.svg');
-        verticalFit.onSubmit = (solutionJson, valid) => {
-          alert('I am going to submit solution');
-        };
-        verticalFit.onValid = () => {
-          alert('I am valid');
-        };
-      </script>
-    </div>
 
-    <div>
-      <h2>Match</h2>
-      <div id="muzzle-canvas-match" >
+      <div class="sample">
+        <h2>Basic (vertical fit)</h2>
+        <div id="muzzle-canvas-vertical-fit" >
+        </div>
+        <pre>
+          <code>
+            Muzzle.aspectRatio = 1;
+            Muzzle.fitImagesVertically = true;
+            Muzzle.basic(1, 2, './torta_1_sinborde.svg');
+          </code>
+        </pre>
+        <script>
+          const verticalFit = Muzzle.another('muzzle-canvas-vertical-fit');
+          verticalFit.aspectRatio = 1;
+          verticalFit.fitImagesVertically = true;
+          verticalFit.basic(1, 2, './torta_1_sinborde.svg');
+          verticalFit.onSubmit = (solutionJson, valid) => {
+            alert('I am going to submit solution');
+          };
+          verticalFit.onValid = () => {
+            alert('I am valid');
+          };
+        </script>
       </div>
-      <pre>
-        <code>
+
+      <div class="sample">
+        <h2>Match</h2>
+        <div id="muzzle-canvas-match" >
+        </div>
+        <pre>
+          <code>
+            const baseUrl = 'https://raw.githubusercontent.com/MumukiProject/mumuki-guia-gobstones-alternativa-kids/master/assets/attires/';
+            Muzzle.match([
+              `${baseUrl}/va_vacio.png`,
+              `${baseUrl}/cu_vacio.png`,
+              `${baseUrl}/chips_poco.png`
+            ], [
+              `${baseUrl}/va_fru.png`,
+              `${baseUrl}/cu_vai.png`,
+              `${baseUrl}/chips_mucho.png`,
+            ], [
+              `${baseUrl}/choc_mitad_vacio2.png`
+            ]);
+          </code>
+        </pre>
+        <script>
           const baseUrl = 'https://raw.githubusercontent.com/MumukiProject/mumuki-guia-gobstones-alternativa-kids/master/assets/attires/';
-          Muzzle.match([
+          const match = Muzzle.another('muzzle-canvas-match');
+          match.match([
             `${baseUrl}/va_vacio.png`,
             `${baseUrl}/cu_vacio.png`,
             `${baseUrl}/chips_poco.png`
@@ -140,30 +197,14 @@
           ], [
             `${baseUrl}/choc_mitad_vacio2.png`
           ]);
-        </code>
-      </pre>
-      <script>
-        const baseUrl = 'https://raw.githubusercontent.com/MumukiProject/mumuki-guia-gobstones-alternativa-kids/master/assets/attires/';
-        const match = Muzzle.another('muzzle-canvas-match');
-        match.match([
-          `${baseUrl}/va_vacio.png`,
-          `${baseUrl}/cu_vacio.png`,
-          `${baseUrl}/chips_poco.png`
-        ], [
-          `${baseUrl}/va_fru.png`,
-          `${baseUrl}/cu_vai.png`,
-          `${baseUrl}/chips_mucho.png`,
-        ], [
-          `${baseUrl}/choc_mitad_vacio2.png`
-        ]);
-        match.onSubmit = (solutionJson, valid) => {
-          alert('I am valid and I am going to submit solution')
-        };
-        match.onValid = () => {
-          alert('I am valid, but I am not going to submit solution');
-        };
-      </script>
+          match.onSubmit = (solutionJson, valid) => {
+            alert('I am valid and I am going to submit solution')
+          };
+          match.onValid = () => {
+            alert('I am valid, but I am not going to submit solution');
+          };
+        </script>
+      </div>
     </div>
   </body>
-
 </html>
