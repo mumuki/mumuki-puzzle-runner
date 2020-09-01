@@ -49,13 +49,11 @@
         </div>
         <pre>
           <code>
-            Muzzle.pieceSize = 300;
             Muzzle.basic(3, 1, './torta_1_sinborde.svg');
           </code>
         </pre>
         <script>
           const horizontal = Muzzle.another('muzzle-horizontal');
-          horizontal.pieceSize = 300;
           horizontal.basic(3, 1, './torta_1_sinborde.svg');
           horizontal.onSubmit = (solutionJson, valid) => {
             alert('I am going to submit solution');
