@@ -2,3 +2,7 @@
   width: 90%;
   padding: 30px;
 }
+
+.mu-kids-exercise-workspace.muzzle-simple .mu-kids-submit-button {
+  display: none;
+}
