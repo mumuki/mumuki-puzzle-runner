@@ -38,7 +38,17 @@ You can see live examples [here](https://mumuki.github.io/mumuki-puzzle-runner/d
 ## Basic puzzle
 
 ```javascript
+// standard basic puzzle
 Muzzle.basic(3, 2, 'https://flbulgarelli.github.io/headbreaker/static/berni.jpg');
+
+// standard basic puzzle, but forcing submit button to show off
+Muzzle.simple = false;
+Muzzle.basic(3, 2, 'https://flbulgarelli.github.io/headbreaker/static/berni.jpg');
+
+// standard basic puzzle, but forcing puzzle aspect ratio to be keep
+// instead of being calculated to make it squared
+Muzzle.aspectRatio = 1;
+Muzzle.basic(1, 2, 'https://flbulgarelli.github.io/headbreaker/static/berni.jpg');
 ```
 
 ## Match-pairs puzzle
@@ -47,6 +57,18 @@ Muzzle.basic(3, 2, 'https://flbulgarelli.github.io/headbreaker/static/berni.jpg'
 const baseUrl = 'https://raw.githubusercontent.com/MumukiProject/mumuki-guia-gobstones-alternativa-kids/master/assets/attires/';
 
 // with left and right pieces
+Muzzle.match([
+  `${baseUrl}/va_vacio.png`,
+  `${baseUrl}/cu_vacio.png`,
+  `${baseUrl}/chips_poco.png`
+], [
+  `${baseUrl}/va_fru.png`,
+  `${baseUrl}/cu_vai.png`,
+  `${baseUrl}/chips_mucho.png`,
+]);
+
+// like the previous one, but forcing submit button to hide
+Muzzle.simple = true;
 Muzzle.match([
   `${baseUrl}/va_vacio.png`,
   `${baseUrl}/cu_vacio.png`,
