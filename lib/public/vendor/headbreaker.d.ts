@@ -952,6 +952,14 @@ declare class PieceValidator {
 declare class PuzzleValidator {
     constructor(f: PuzzleCondition);
     isValid(puzzle: Puzzle): void;
+    /**
+     * Compares two pairs
+     */
+    static equalDiffs(param0: Pair, param1: Pair): boolean;
+    /**
+     * The delta used to compare distances
+     */
+    static DIFF_DELTA: number;
     static connected(): void;
     /**
      * @param expected - the expected relative refs

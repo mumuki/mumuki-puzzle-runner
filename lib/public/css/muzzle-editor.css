@@ -1,4 +1,13 @@
 .mu-kids-state-image img {
-  width: 90%;
+  height: 100%;
+  width: auto;
   padding: 30px;
+}
+
+.mu-kids-state.mu-state-initial {
+  width: 100%;
+}
+
+.mu-kids-exercise-workspace.muzzle-simple .mu-kids-submit-button {
+  display: none;
 }
