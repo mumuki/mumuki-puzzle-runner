@@ -146,12 +146,14 @@ handling solutions persistence and submitting them
     * [.expectedRefsAreOnlyDescriptive](#MuzzleCanvas+expectedRefsAreOnlyDescriptive) : <code>boolean</code>
     * [.canvasWidth](#MuzzleCanvas+canvasWidth) : <code>number</code>
     * [.canvasHeight](#MuzzleCanvas+canvasHeight) : <code>number</code>
+    * [.fixedDimensions](#MuzzleCanvas+fixedDimensions) : <code>boolean</code>
     * [.borderFill](#MuzzleCanvas+borderFill) : <code>number</code>
     * [.strokeWidth](#MuzzleCanvas+strokeWidth) : <code>number</code>
     * [.pieceSize](#MuzzleCanvas+pieceSize) : <code>number</code>
     * [.aspectRatio](#MuzzleCanvas+aspectRatio) : <code>number</code>
     * [.fitImagesVertically](#MuzzleCanvas+fitImagesVertically) : <code>boolean</code>
     * [.previousSolutionContent](#MuzzleCanvas+previousSolutionContent) : <code>string</code>
+    * [.simple](#MuzzleCanvas+simple) : <code>boolean</code>
     * [.baseConfig](#MuzzleCanvas+baseConfig)
     * [.imageAdjustmentAxis](#MuzzleCanvas+imageAdjustmentAxis) : <code>Axis</code>
     * [.canvas](#MuzzleCanvas+canvas) ⇒ <code>Canvas</code>
@@ -199,6 +201,13 @@ Width of canvas
 Height of canvas
 
 **Kind**: instance property of [<code>MuzzleCanvas</code>](#MuzzleCanvas)
+<a name="MuzzleCanvas+fixedDimensions"></a>
+
+### muzzleCanvas.fixedDimensions : <code>boolean</code>
+Wether canvas shoud **not** be resized.
+Default is `false`
+
+**Kind**: instance property of [<code>MuzzleCanvas</code>](#MuzzleCanvas)
 <a name="MuzzleCanvas+borderFill"></a>
 
 ### muzzleCanvas.borderFill : <code>number</code>
@@ -236,6 +245,15 @@ to puzzle dimensions. `false` by default
 ### muzzleCanvas.previousSolutionContent : <code>string</code>
 The previous solution to the current puzzle in a past session,
 if any
+
+**Kind**: instance property of [<code>MuzzleCanvas</code>](#MuzzleCanvas)
+<a name="MuzzleCanvas+simple"></a>
+
+### muzzleCanvas.simple : <code>boolean</code>
+Whether the current puzzle can be solved in very few tries.
+
+Set null for automatic configuration of this property. Basic puzzles will be considered
+basic and match puzzles will be considered non-basic.
 
 **Kind**: instance property of [<code>MuzzleCanvas</code>](#MuzzleCanvas)
 <a name="MuzzleCanvas+baseConfig"></a>
