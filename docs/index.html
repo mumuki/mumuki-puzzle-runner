@@ -94,7 +94,9 @@
           <code>
             Muzzle.basic(3, 3, './torta_1_sinborde.svg').then(it => {
               it.solve();
+              solved.resetCoordinates();
               it.redraw();
+              solved.focus();
             });
           </code>
         </pre>
@@ -102,7 +104,9 @@
           const solved = Muzzle.another('muzzle-canvas-solved');
           solved.basic(3, 3, './torta_1_sinborde.svg').then(it => {
             it.solve();
+            solved.resetCoordinates();
             it.redraw();
+            solved.focus();
           });
           solved.onSubmit = (solutionJson, valid) => {
             alert('I am going to submit solution');
