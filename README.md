@@ -191,9 +191,12 @@ handling solutions persistence and submitting them
     * [.multi(x, y, [imagePaths])](#MuzzleCanvas+multi) ⇒ <code>Promise.&lt;Canvas&gt;</code>
     * [.match(leftUrls, rightUrls, leftOddUrls, rightOddUrls)](#MuzzleCanvas+match) ⇒ <code>Promise.&lt;Canvas&gt;</code>
     * [.custom(canvas)](#MuzzleCanvas+custom) ⇒ <code>Promise.&lt;Canvas&gt;</code>
+    * [.scale(width, height)](#MuzzleCanvas+scale)
+    * [.focus()](#MuzzleCanvas+focus)
     * [.ready()](#MuzzleCanvas+ready)
     * [.loadSolution(solution)](#MuzzleCanvas+loadSolution)
     * [.loadPreviousSolution()](#MuzzleCanvas+loadPreviousSolution)
+    * [.resetCoordinates()](#MuzzleCanvas+resetCoordinates)
     * [.submit()](#MuzzleCanvas+submit)
 
 <a name="MuzzleCanvas+canvasId"></a>
@@ -419,6 +422,24 @@ with optional odd left and right pieces that don't match
 | --- | --- |
 | canvas | <code>Canvas</code> |
 
+<a name="MuzzleCanvas+scale"></a>
+
+### muzzleCanvas.scale(width, height)
+Scales the canvas to the given width and height
+
+**Kind**: instance method of [<code>MuzzleCanvas</code>](#MuzzleCanvas)
+
+| Param | Type |
+| --- | --- |
+| width | <code>number</code> |
+| height | <code>number</code> |
+
+<a name="MuzzleCanvas+focus"></a>
+
+### muzzleCanvas.focus()
+Focuses the stage around the canvas center
+
+**Kind**: instance method of [<code>MuzzleCanvas</code>](#MuzzleCanvas)
 <a name="MuzzleCanvas+ready"></a>
 
 ### muzzleCanvas.ready()
@@ -441,6 +462,13 @@ Loads - but does not draw - a solution into the canvas.
 
 ### muzzleCanvas.loadPreviousSolution()
 Loads - but does not draw - the current canvas with the previous solution, if available.
+
+**Kind**: instance method of [<code>MuzzleCanvas</code>](#MuzzleCanvas)
+<a name="MuzzleCanvas+resetCoordinates"></a>
+
+### muzzleCanvas.resetCoordinates()
+Translates the pieces so that
+they start at canvas' coordinates origin
 
 **Kind**: instance method of [<code>MuzzleCanvas</code>](#MuzzleCanvas)
 <a name="MuzzleCanvas+submit"></a>
