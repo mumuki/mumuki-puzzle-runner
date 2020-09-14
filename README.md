@@ -49,6 +49,10 @@ Muzzle.basic(3, 2, 'https://flbulgarelli.github.io/headbreaker/static/berni.jpg'
 // instead of being calculated to make it squared
 Muzzle.aspectRatio = 1;
 Muzzle.basic(1, 2, 'https://flbulgarelli.github.io/headbreaker/static/berni.jpg');
+
+// standard basic puzzle, but using triangle-like inserts
+Muzzle.spiky = true;
+Muzzle.basic(1, 2, 'https://flbulgarelli.github.io/headbreaker/static/berni.jpg');
 ```
 
 ## Match-pairs puzzle
@@ -177,6 +181,8 @@ handling solutions persistence and submitting them
     * [.previousSolutionContent](#MuzzleCanvas+previousSolutionContent) : <code>string</code>
     * [.simple](#MuzzleCanvas+simple) : <code>boolean</code>
     * [.baseConfig](#MuzzleCanvas+baseConfig)
+    * [.outlineConfig](#MuzzleCanvas+outlineConfig)
+    * [.adjustedPieceSize](#MuzzleCanvas+adjustedPieceSize) ⇒ <code>Vector</code>
     * [.imageAdjustmentAxis](#MuzzleCanvas+imageAdjustmentAxis) : <code>Axis</code>
     * [.canvas](#MuzzleCanvas+canvas) ⇒ <code>Canvas</code>
     * [.solution](#MuzzleCanvas+solution) ⇒ [<code>Solution</code>](#Solution)
@@ -284,6 +290,16 @@ basic and match puzzles will be considered non-basic.
 <a name="MuzzleCanvas+baseConfig"></a>
 
 ### muzzleCanvas.baseConfig
+**Kind**: instance property of [<code>MuzzleCanvas</code>](#MuzzleCanvas)
+<a name="MuzzleCanvas+outlineConfig"></a>
+
+### muzzleCanvas.outlineConfig
+**Kind**: instance property of [<code>MuzzleCanvas</code>](#MuzzleCanvas)
+<a name="MuzzleCanvas+adjustedPieceSize"></a>
+
+### muzzleCanvas.adjustedPieceSize ⇒ <code>Vector</code>
+The piece size, adjusted to the aspect ratio
+
 **Kind**: instance property of [<code>MuzzleCanvas</code>](#MuzzleCanvas)
 <a name="MuzzleCanvas+imageAdjustmentAxis"></a>
 
