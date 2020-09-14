@@ -123,6 +123,7 @@ declare class Canvas {
         painter?: Painter;
         puzzleDiameter?: Vector | number;
         maxPiecesCount?: Vector | number;
+        outline?: Outline;
     });
     _painter: Painter;
     _maxPiecesCount: Vector;
@@ -193,6 +194,13 @@ declare class Canvas {
      * being modified and you need changes to become visible
      */
     redraw(): void;
+    /**
+     * Refreshes image metadata.
+     *
+     * Use this method in order adjuster updates and image changes after initial draw
+     * to make effect.
+     */
+    refill(): void;
     /**
      * Clears the canvas, clearing the rendering backend and discarding all the created templates, figures, and pieces
      */
@@ -332,7 +340,7 @@ declare interface DummyPainter extends Painter {
 declare class DummyPainter implements Painter {
     initialize(canvas: Canvas, id: string): void;
     draw(canvas: Canvas): void;
-    sketch(canvas: Canvas, _piece: Piece, _figure: Figure): void;
+    sketch(canvas: Canvas, _piece: Piece, _figure: Figure, outline: Outline): void;
 }
 
 declare type ImageMetadata = {
@@ -369,7 +377,8 @@ declare class KonvaPainter implements Painter {
     reinitialize(canvas: Canvas): void;
     resize(canvas: Canvas, width: number, height: number): void;
     scale(canvas: Canvas, factor: Vector): void;
-    sketch(canvas: Canvas, piece: Piece, figure: Figure): void;
+    sketch(canvas: Canvas, piece: Piece, figure: Figure, outline: Outline): void;
+    fill(canvas: Canvas, piece: Piece, figure: Figure): void;
     label(_canvas: Canvas, piece: Piece, figure: Figure): void;
     physicalTranslate(_canvas: Canvas, group: Group, piece: Piece): void;
     logicalTranslate(_canvas: Canvas, piece: Piece, group: any): void;
@@ -426,12 +435,13 @@ declare module "Metadata" {
     function copy(metadata: T): T;
 }
 
+declare type Outline = Squared | Rounded;
+
 /**
  * This module contains the draw function. Override it change pieces drawing strategy
  */
 declare module "Outline" {
-    function select(insert: Insert, t: number, s: number, n: number): void;
-    function draw(piece: Piece, size?: Vector | number, borderFill?: Vector | number): number[];
+    function select(insert: Insert, t: T, s: T, n: T): T;
 }
 
 declare type VectorAction = (dx: number, dy: number) => void;
@@ -467,7 +477,12 @@ declare interface Painter {
      * Adds a piece to the rendering backend, so that it is ready to be drawn
      * @param figure - the rendering backend information for this piece. This method may mutate it if necessary
      */
-    sketch(canvas: Canvas, piece: Piece, figure: Figure): void;
+    sketch(canvas: Canvas, piece: Piece, figure: Figure, outline: Outline): void;
+    /**
+     * Fills a piece using the canvas image information
+     * assigned for it
+     */
+    fill(canvas: Canvas, piece: Piece, figure: Figure): void;
     /**
      * Adds piece's label to the given figure in the rendering backend
      * @param figure - the rendering backend information for this piece. This method may mutate it if necessary
@@ -1011,6 +1026,7 @@ declare module "Vector" {
     function divide(one: Vector | number, other: Vector | number): Vector;
     function plus(one: Vector | number, other: Vector | number): Vector;
     function minus(one: Vector | number, other: Vector | number): Vector;
+    function min(one: Vector): number;
     function apply(one: Vector | number, other: Vector | number, f: any): Vector;
 }
 

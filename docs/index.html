@@ -118,18 +118,20 @@
       </div>
 
       <div class="sample">
-        <h2>Basic (fixed aspect ratio)</h2>
+        <h2>Basic spiky (fixed aspect ratio)</h2>
         <div id="muzzle-canvas-aspect" >
         </div>
         <pre>
           <code>
             Muzzle.aspectRatio = 1;
+            Muzzle.spiky = true;
             Muzzle.basic(1, 2, './torta_1_sinborde.svg');
           </code>
         </pre>
         <script>
           const aspect = Muzzle.another('muzzle-canvas-aspect');
           aspect.aspectRatio = 1;
+          aspect.spiky = true;
           aspect.basic(1, 2, './torta_1_sinborde.svg');
           aspect.onSubmit = (solutionJson, valid) => {
             alert('I am going to submit solution');
