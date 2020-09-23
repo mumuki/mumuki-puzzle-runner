@@ -168,6 +168,27 @@
       </div>
 
       <div class="sample">
+        <h2>Basic (animated)</h2>
+        <div id="muzzle-canvas-basic-animated" >
+        </div>
+        <pre>
+          <code>
+            Muzzle.basic(1, 2, new AnimationBackground('./head-patch.png'));
+          </code>
+        </pre>
+        <script>
+          const basicAnimated = Muzzle.another('muzzle-canvas-basic-animated');
+          basicAnimated.basic(1, 2, new AnimationBackground('./head-patch.png'));
+          basicAnimated.onSubmit = (solutionJson, valid) => {
+            alert('I am going to submit solution');
+          };
+          basicAnimated.onValid = () => {
+            alert('I am valid');
+          };
+        </script>
+      </div>
+
+      <div class="sample">
         <h2>Match</h2>
         <div id="muzzle-canvas-match" >
         </div>
