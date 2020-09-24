@@ -173,12 +173,12 @@
         </div>
         <pre>
           <code>
-            Muzzle.basic(1, 2, new AnimationBackground('./head-patch.png'));
+            Muzzle.basic(1, 2, Muzzle.animation('./head.png'));
           </code>
         </pre>
         <script>
           const animated = Muzzle.another('muzzle-canvas-animated');
-          animated.basic(1, 2, new AnimationBackground('./head-patch.png'));
+          animated.basic(1, 2, Muzzle.animation('./head.png'));
           animated.onSubmit = (solutionJson, valid) => {
             console.log('I am going to submit solution');
           };
@@ -232,22 +232,18 @@
       </div>
 
       <div class="sample">
-        <h2>Match</h2>
+        <h2>Match (animated)</h2>
         <div id="muzzle-canvas-animated-match" >
         </div>
         <pre>
           <code>
             const baseUrl = 'https://raw.githubusercontent.com/MumukiProject/mumuki-guia-gobstones-alternativa-kids/master/assets/attires/';
             Muzzle.match([
-              `${baseUrl}/va_vacio.png`,
               `${baseUrl}/cu_vacio.png`,
               `${baseUrl}/chips_poco.png`
             ], [
-              `${baseUrl}/va_fru.png`,
               `${baseUrl}/cu_vai.png`,
-              `${baseUrl}/chips_mucho.png`,
-            ], [
-              `${baseUrl}/choc_mitad_vacio2.png`
+              Muzzle.animation('./head.png'),
             ]);
           </code>
         </pre>
@@ -258,7 +254,7 @@
             `${baseUrl}/chips_poco.png`
           ], [
             `${baseUrl}/cu_vai.png`,
-            new AnimationBackground('./head-patch.png'),
+            Muzzle.animation('./head.png'),
           ]);
           animatedMatch.onSubmit = (solutionJson, valid) => {
             console.log('I am valid and I am going to submit solution')

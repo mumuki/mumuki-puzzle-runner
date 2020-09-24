@@ -1,7 +1,5 @@
-[![Stories in Ready](https://badge.waffle.io/mumuki/mumuki-puzzle-runner.png?label=ready&title=Ready)](https://waffle.io/mumuki/mumuki-puzzle-runner)
 [![Build Status](https://travis-ci.org/mumuki/mumuki-puzzle-runner.svg?branch=master)](https://travis-ci.org/mumuki/mumuki-puzzle-runner)
 [![Code Climate](https://codeclimate.com/github/mumuki/mumuki-puzzle-runner/badges/gpa.svg)](https://codeclimate.com/github/mumuki/mumuki-puzzle-runner)
-[![Test Coverage](https://codeclimate.com/github/mumuki/mumuki-puzzle-runner/badges/coverage.svg)](https://codeclimate.com/github/mumuki/mumuki-puzzle-runner)
 
 > mumuki-puzzle-runner
 
@@ -39,7 +37,18 @@ You can see live examples [here](https://mumuki.github.io/mumuki-puzzle-runner/d
 
 ```javascript
 // standard basic puzzle
+Muzzle.basic(3, 2, Muzzle.image('https://flbulgarelli.github.io/headbreaker/static/berni.jpg'));
+// shorthand
 Muzzle.basic(3, 2, 'https://flbulgarelli.github.io/headbreaker/static/berni.jpg');
+
+// standard basic puzzle, using an animation as background,
+// that will be triggered when the puzzle is solved
+// The URL must point to a squared patch of frames - 16 by default
+Muzzle.basic(3, 2, Muzzle.animation('https://mumuki.github.io/mumuki-puzzle-runner/docs/head.png'));
+
+// standard basic puzzle, using an animation as background, explicitly
+// specifying animation period and patch's columns and rows
+Muzzle.basic(3, 2, Muzzle.animation('https://mumuki.github.io/mumuki-puzzle-runner/docs/head.png', 100, 4, 4));
 
 // standard basic puzzle, but forcing submit button to show off
 Muzzle.simple = false;
@@ -133,6 +142,10 @@ The solution accepted by this runner is a JSON string with the following format:
 ## Classes
 
 <dl>
+<dt><a href="#MuzzleImage">MuzzleImage</a></dt>
+<dd></dd>
+<dt><a href="#MuzzleAnimation">MuzzleAnimation</a></dt>
+<dd></dd>
 <dt><a href="#MuzzleCanvas">MuzzleCanvas</a></dt>
 <dd><p>Facade for referencing and creating a global puzzle canvas,
 handling solutions persistence and submitting them</p>
@@ -146,18 +159,102 @@ handling solutions persistence and submitting them</p>
 <dd><p>Creates a suplementary canvas at the element
 of the given id</p>
 </dd>
+<dt><a href="#animation">animation(patchUrl, [animationInterval], [patchWidth], [patchHeight])</a> ⇒ <code><a href="#MuzzleAnimation">MuzzleAnimation</a></code></dt>
+<dd><p>Creates an animation object that can be used as background
+in puzzles</p>
+</dd>
+<dt><a href="#image">image(imageUrl)</a> ⇒ <code><a href="#MuzzleImage">MuzzleImage</a></code></dt>
+<dd><p>Creates an image object that can be used as background
+in puzzles</p>
+</dd>
 </dl>
 
 ## Typedefs
 
 <dl>
-<dt><a href="#PieceConfig">PieceConfig</a> : <code>object</code></dt>
+<dt><a href="#Background">Background</a> : <code>string</code> | <code><a href="#MuzzleImage">MuzzleImage</a></code> | <code><a href="#MuzzleAnimation">MuzzleAnimation</a></code></dt>
 <dd></dd>
 <dt><a href="#Point">Point</a> : <code>Array.&lt;number&gt;</code></dt>
 <dd></dd>
 <dt><a href="#Solution">Solution</a> : <code>object</code></dt>
 <dd></dd>
 </dl>
+
+<a name="MuzzleImage"></a>
+
+## MuzzleImage
+**Kind**: global class
+
+* [MuzzleImage](#MuzzleImage)
+    * [new MuzzleImage(imageUrl)](#new_MuzzleImage_new)
+    * [.load(_muzzle)](#MuzzleImage+load) ⇒ <code>Promise.&lt;(HTMLCanvasElement\|HTMLImageElement)&gt;</code>
+
+<a name="new_MuzzleImage_new"></a>
+
+### new MuzzleImage(imageUrl)
+
+| Param | Type |
+| --- | --- |
+| imageUrl | <code>String</code> |
+
+<a name="MuzzleImage+load"></a>
+
+### muzzleImage.load(_muzzle) ⇒ <code>Promise.&lt;(HTMLCanvasElement\|HTMLImageElement)&gt;</code>
+**Kind**: instance method of [<code>MuzzleImage</code>](#MuzzleImage)
+
+| Param | Type |
+| --- | --- |
+| _muzzle | [<code>MuzzleCanvas</code>](#MuzzleCanvas) |
+
+<a name="MuzzleAnimation"></a>
+
+## MuzzleAnimation
+**Kind**: global class
+
+* [MuzzleAnimation](#MuzzleAnimation)
+    * [new MuzzleAnimation(patchUrl, animationInterval, patchWidth, patchHeight)](#new_MuzzleAnimation_new)
+    * [.load(muzzle)](#MuzzleAnimation+load) ⇒ <code>Promise.&lt;(HTMLCanvasElement\|HTMLImageElement)&gt;</code>
+    * [.updateFrame(img, canvas)](#MuzzleAnimation+updateFrame)
+    * [.initDimmensions(img)](#MuzzleAnimation+initDimmensions)
+
+<a name="new_MuzzleAnimation_new"></a>
+
+### new MuzzleAnimation(patchUrl, animationInterval, patchWidth, patchHeight)
+
+| Param | Type |
+| --- | --- |
+| patchUrl | <code>string</code> |
+| animationInterval | <code>number</code> |
+| patchWidth | <code>number</code> |
+| patchHeight | <code>number</code> |
+
+<a name="MuzzleAnimation+load"></a>
+
+### muzzleAnimation.load(muzzle) ⇒ <code>Promise.&lt;(HTMLCanvasElement\|HTMLImageElement)&gt;</code>
+**Kind**: instance method of [<code>MuzzleAnimation</code>](#MuzzleAnimation)
+
+| Param | Type |
+| --- | --- |
+| muzzle | [<code>MuzzleCanvas</code>](#MuzzleCanvas) |
+
+<a name="MuzzleAnimation+updateFrame"></a>
+
+### muzzleAnimation.updateFrame(img, canvas)
+**Kind**: instance method of [<code>MuzzleAnimation</code>](#MuzzleAnimation)
+
+| Param | Type |
+| --- | --- |
+| img | <code>HTMLImageElement</code> |
+| canvas | <code>Canvas</code> |
+
+<a name="MuzzleAnimation+initDimmensions"></a>
+
+### muzzleAnimation.initDimmensions(img)
+**Kind**: instance method of [<code>MuzzleAnimation</code>](#MuzzleAnimation)
+
+| Param | Type |
+| --- | --- |
+| img | <code>HTMLImageElement</code> |
 
 <a name="MuzzleCanvas"></a>
 
@@ -193,8 +290,8 @@ handling solutions persistence and submitting them
     * [.onValid()](#MuzzleCanvas+onValid)
     * [.draw()](#MuzzleCanvas+draw)
     * [.expect(refs)](#MuzzleCanvas+expect)
-    * [.basic(x, y, imagePath)](#MuzzleCanvas+basic) ⇒ <code>Promise.&lt;Canvas&gt;</code>
-    * [.multi(x, y, [imagePaths])](#MuzzleCanvas+multi) ⇒ <code>Promise.&lt;Canvas&gt;</code>
+    * [.basic(x, y, background)](#MuzzleCanvas+basic) ⇒ <code>Promise.&lt;Canvas&gt;</code>
+    * [.multi(x, y, backgrounds)](#MuzzleCanvas+multi) ⇒ <code>Promise.&lt;Canvas&gt;</code>
     * [.match(leftUrls, rightUrls, leftOddUrls, rightOddUrls)](#MuzzleCanvas+match) ⇒ <code>Promise.&lt;Canvas&gt;</code>
     * [.custom(canvas)](#MuzzleCanvas+custom) ⇒ <code>Promise.&lt;Canvas&gt;</code>
     * [.scale(width, height)](#MuzzleCanvas+scale)
@@ -386,7 +483,7 @@ small updates to the pieces.
 
 <a name="MuzzleCanvas+basic"></a>
 
-### muzzleCanvas.basic(x, y, imagePath) ⇒ <code>Promise.&lt;Canvas&gt;</code>
+### muzzleCanvas.basic(x, y, background) ⇒ <code>Promise.&lt;Canvas&gt;</code>
 Creates a basic puzzle canvas with a rectangular shape
 and a background image, that is automatically
 submitted when solved
@@ -398,19 +495,19 @@ submitted when solved
 | --- | --- | --- |
 | x | <code>number</code> | the number of horizontal pieces |
 | y | <code>number</code> | the number of vertical pieces |
-| imagePath | <code>string</code> |  |
+| background | [<code>Background</code>](#Background) | the background, expressed as a path or a background object |
 
 <a name="MuzzleCanvas+multi"></a>
 
-### muzzleCanvas.multi(x, y, [imagePaths]) ⇒ <code>Promise.&lt;Canvas&gt;</code>
+### muzzleCanvas.multi(x, y, backgrounds) ⇒ <code>Promise.&lt;Canvas&gt;</code>
 **Kind**: instance method of [<code>MuzzleCanvas</code>](#MuzzleCanvas)
 **Returns**: <code>Promise.&lt;Canvas&gt;</code> - the promise of the built canvas
 
-| Param | Type |
-| --- | --- |
-| x | <code>number</code> |
-| y | <code>number</code> |
-| [imagePaths] | <code>Array.&lt;string&gt;</code> |
+| Param | Type | Description |
+| --- | --- | --- |
+| x | <code>number</code> |  |
+| y | <code>number</code> |  |
+| backgrounds | [<code>Array.&lt;Background&gt;</code>](#Background) | the backgrounds, expressed as a list of paths or a background objects |
 
 <a name="MuzzleCanvas+match"></a>
 
@@ -506,17 +603,37 @@ of the given id
 | --- | --- |
 | id | <code>string</code> |
 
-<a name="PieceConfig"></a>
+<a name="animation"></a>
 
-## PieceConfig : <code>object</code>
-**Kind**: global typedef
-**Properties**
+## animation(patchUrl, [animationInterval], [patchWidth], [patchHeight]) ⇒ [<code>MuzzleAnimation</code>](#MuzzleAnimation)
+Creates an animation object that can be used as background
+in puzzles
 
-| Name | Type |
+**Kind**: global function
+
+| Param | Type | Default |
+| --- | --- | --- |
+| patchUrl | <code>string</code> |  |
+| [animationInterval] | <code>number</code> | <code>100</code> |
+| [patchWidth] | <code>number</code> | <code>4</code> |
+| [patchHeight] | <code>number</code> | <code>4</code> |
+
+<a name="image"></a>
+
+## image(imageUrl) ⇒ [<code>MuzzleImage</code>](#MuzzleImage)
+Creates an image object that can be used as background
+in puzzles
+
+**Kind**: global function
+
+| Param | Type |
 | --- | --- |
-| imagePath | <code>string</code> |
-| structure | <code>string</code> |
+| imageUrl | <code>string</code> |
 
+<a name="Background"></a>
+
+## Background : <code>string</code> \| [<code>MuzzleImage</code>](#MuzzleImage) \| [<code>MuzzleAnimation</code>](#MuzzleAnimation)
+**Kind**: global typedef
 <a name="Point"></a>
 
 ## Point : <code>Array.&lt;number&gt;</code>
