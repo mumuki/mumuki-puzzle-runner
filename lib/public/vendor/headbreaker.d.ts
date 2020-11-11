@@ -344,12 +344,12 @@ declare class DummyPainter implements Painter {
 }
 
 declare type ImageMetadata = {
-    content: HTMLImageElement;
+    content: HTMLImageElement | HTMLCanvasElement;
     offset?: Vector;
     scale?: number;
 };
 
-declare type ImageLike = HTMLImageElement | ImageMetadata;
+declare type ImageLike = HTMLImageElement | HTMLCanvasElement | ImageMetadata;
 
 declare module "ImageMetadata" {
     /**
