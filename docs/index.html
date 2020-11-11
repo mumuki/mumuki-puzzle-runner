@@ -211,6 +211,50 @@
       </div>
 
       <div class="sample">
+        <h2>Match</h2>
+        <div id="muzzle-canvas-match-irregular" >
+        </div>
+        <pre>
+          <code>
+            const baseUrl = 'https://raw.githubusercontent.com/MumukiProject/mumuki-guia-gobstones-alternativa-kids/master/assets/attires/';
+            Match.aspectRatio = 2
+            Match.match([
+              `${baseUrl}/va_vacio.png`,
+              `${baseUrl}/cu_vacio.png`,
+              `${baseUrl}/chips_poco.png`
+            ], [
+              `${baseUrl}/va_fru.png`,
+              `${baseUrl}/cu_vai.png`,
+              `${baseUrl}/chips_mucho.png`,
+            ], [
+              `${baseUrl}/choc_mitad_vacio2.png`
+            ], [], 2);
+          </code>
+        </pre>
+        <script>
+          const irregular = Muzzle.another('muzzle-canvas-match-irregular');
+          irregular.aspectRatio = 2
+          irregular.match([
+            `${baseUrl}/va_vacio.png`,
+            `${baseUrl}/cu_vacio.png`,
+            `${baseUrl}/chips_poco.png`
+          ], [
+            `${baseUrl}/va_fru.png`,
+            `${baseUrl}/cu_vai.png`,
+            `${baseUrl}/chips_mucho.png`,
+          ], [
+            `${baseUrl}/choc_mitad_vacio2.png`
+          ], [], 2);
+          irregular.onSubmit = (solutionJson, valid) => {
+            alert('I am valid and I am going to submit solution')
+          };
+          irregular.onValid = () => {
+            alert('I am valid, but I am not going to submit solution');
+          };
+        </script>
+      </div>
+
+      <div class="sample">
         <h2>Try</h2>
         <div id="muzzle-canvas-try" >
         </div>
