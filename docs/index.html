@@ -35,10 +35,10 @@
         <script>
           Muzzle.basic(1, 2, './torta_1_sinborde.svg');
           Muzzle.onSubmit = (solutionJson, valid) => {
-            console.log('I am going to submit solution');
+            alert('I am going to submit solution');
           };
           Muzzle.onValid = () => {
-            console.log('I am valid');
+            alert('I am valid');
           };
         </script>
       </div>
@@ -56,10 +56,10 @@
           const horizontal = Muzzle.another('muzzle-horizontal');
           horizontal.basic(3, 1, './torta_1_sinborde.svg');
           horizontal.onSubmit = (solutionJson, valid) => {
-            console.log('I am going to submit solution');
+            alert('I am going to submit solution');
           };
           horizontal.onValid = () => {
-            console.log('I am valid');
+            alert('I am valid');
           };
         </script>
       </div>
@@ -78,10 +78,10 @@
           const squared = Muzzle.another('muzzle-canvas-squared');
           squared.basic(3, 3, './torta_1_sinborde.svg');
           squared.onSubmit = (solutionJson, valid) => {
-            console.log('I am going to submit solution');
+            alert('I am going to submit solution');
           };
           squared.onValid = () => {
-            console.log('I am valid');
+            alert('I am valid');
           };
         </script>
       </div>
@@ -109,10 +109,10 @@
             solved.focus();
           });
           solved.onSubmit = (solutionJson, valid) => {
-            console.log('I am going to submit solution');
+            alert('I am going to submit solution');
           };
           solved.onValid = () => {
-            console.log('I am valid');
+            alert('I am valid');
           };
         </script>
       </div>
@@ -134,10 +134,10 @@
           aspect.spiky = true;
           aspect.basic(1, 2, './torta_1_sinborde.svg');
           aspect.onSubmit = (solutionJson, valid) => {
-            console.log('I am going to submit solution');
+            alert('I am going to submit solution');
           };
           aspect.onValid = () => {
-            console.log('I am valid');
+            alert('I am valid');
           };
         </script>
       </div>
@@ -159,31 +159,10 @@
           verticalFit.fitImagesVertically = true;
           verticalFit.basic(1, 2, './torta_1_sinborde.svg');
           verticalFit.onSubmit = (solutionJson, valid) => {
-            console.log('I am going to submit solution');
+            alert('I am going to submit solution');
           };
           verticalFit.onValid = () => {
-            console.log('I am valid');
-          };
-        </script>
-      </div>
-
-      <div class="sample">
-        <h2>Basic (animated)</h2>
-        <div id="muzzle-canvas-animated" >
-        </div>
-        <pre>
-          <code>
-            Muzzle.basic(1, 2, new AnimationBackground('./head.png'));
-          </code>
-        </pre>
-        <script>
-          const animated = Muzzle.another('muzzle-canvas-animated');
-          animated.basic(1, 2, new AnimationBackground('./head.png'));
-          animated.onSubmit = (solutionJson, valid) => {
-            console.log('I am going to submit solution');
-          };
-          animated.onValid = () => {
-            console.log('I am valid');
+            alert('I am valid');
           };
         </script>
       </div>
@@ -223,22 +202,24 @@
             `${baseUrl}/choc_mitad_vacio2.png`
           ]);
           match.onSubmit = (solutionJson, valid) => {
-            console.log('I am valid and I am going to submit solution')
+            alert('I am valid and I am going to submit solution')
           };
           match.onValid = () => {
-            console.log('I am valid, but I am not going to submit solution');
+            alert('I am valid, but I am not going to submit solution');
           };
         </script>
       </div>
 
       <div class="sample">
-        <h2>Match</h2>
-        <div id="muzzle-canvas-animated-match" >
+        <h2>Match (Irregular Pieces)</h2>
+        <div id="muzzle-canvas-match-irregular" >
         </div>
         <pre>
           <code>
             const baseUrl = 'https://raw.githubusercontent.com/MumukiProject/mumuki-guia-gobstones-alternativa-kids/master/assets/attires/';
-            Muzzle.match([
+            Match.aspectRatio = 2
+            Match.strokeWidth = 6; // compensate the thinner stroke
+            Match.match([
               `${baseUrl}/va_vacio.png`,
               `${baseUrl}/cu_vacio.png`,
               `${baseUrl}/chips_poco.png`
@@ -248,23 +229,29 @@
               `${baseUrl}/chips_mucho.png`,
             ], [
               `${baseUrl}/choc_mitad_vacio2.png`
-            ]);
+            ], [], 2); // double the right pieces' width
           </code>
         </pre>
         <script>
-          const animatedMatch = Muzzle.another('muzzle-canvas-animated-match');
-          animatedMatch.match([
+          const irregular = Muzzle.another('muzzle-canvas-match-irregular');
+          irregular.aspectRatio = 2
+          irregular.strokeWidth = 6;
+          irregular.match([
+            `${baseUrl}/va_vacio.png`,
             `${baseUrl}/cu_vacio.png`,
             `${baseUrl}/chips_poco.png`
           ], [
+            `${baseUrl}/va_fru.png`,
             `${baseUrl}/cu_vai.png`,
-            new AnimationBackground('./head.png'),
-          ]);
-          animatedMatch.onSubmit = (solutionJson, valid) => {
-            console.log('I am valid and I am going to submit solution')
+            `${baseUrl}/chips_mucho.png`,
+          ], [
+            `${baseUrl}/choc_mitad_vacio2.png`
+          ], [], 2);
+          irregular.onSubmit = (solutionJson, valid) => {
+            alert('I am valid and I am going to submit solution')
           };
-          animatedMatch.onValid = () => {
-            console.log('I am valid, but I am not going to submit solution');
+          irregular.onValid = () => {
+            alert('I am valid, but I am not going to submit solution');
           };
         </script>
       </div>
