@@ -360,9 +360,7 @@ declare module "ImageMetadata" {
     function asImageMetadata(imageLike: ImageLike): ImageMetadata;
 }
 
-declare module "headbreaker" {
-    var painters: any;
-}
+declare module "headbreaker" { }
 
 /**
  * A connection element of a piece
@@ -441,19 +439,11 @@ declare module "Metadata" {
 
 declare type Outline = Squared | Rounded;
 
-declare function select(insert: Insert, t: T, s: T, n: T): T;
-
 /**
- * Standard outline
+ * This module contains the draw function. Override it change pieces drawing strategy
  */
-declare class Squared {
-    draw(piece: Piece, size?: Vector | number, borderFill?: Vector | number): number[];
-}
-
-declare class Rounded {
-    referenceInsertAxis: Axis;
-    referenceInsertAxisLength(fullSize: Vector): number;
-    draw(p: Piece, size?: Vector | number, borderFill?: Vector | number): number[];
+declare module "Outline" {
+    function select(insert: Insert, t: T, s: T, n: T): T;
 }
 
 declare type VectorAction = (dx: number, dy: number) => void;
