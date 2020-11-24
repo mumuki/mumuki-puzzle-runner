@@ -100,6 +100,7 @@ declare type Template = {
  * @param [options.pieceSize] - the piece size expresed as it edge-to-edge diameter
  * @param [options.borderFill] - the broder fill of the pieces, expresed in pixels. 0 means no border fill, 0.5 * pieceSize means full fill
  * @param [options.lineSoftness] - how soft the line will be
+ * @param [options.preventOffstageDrag] - whether dragging out of canvas is prevented
  * @param [options.image] - an optional background image for the puzzle that will be split across all pieces.
  * @param [options.fixed] - whether the canvas can is fixed or can be dragged
  * @param [options.painter] - the Painter object used to actually draw figures in canvas
@@ -118,6 +119,7 @@ declare class Canvas {
         strokeWidth?: number;
         strokeColor?: string;
         lineSoftness?: number;
+        preventOffstageDrag?: boolean;
         image?: ImageLike;
         fixed?: boolean;
         painter?: Painter;
@@ -1026,7 +1028,8 @@ declare module "Vector" {
     function divide(one: Vector | number, other: Vector | number): Vector;
     function plus(one: Vector | number, other: Vector | number): Vector;
     function minus(one: Vector | number, other: Vector | number): Vector;
-    function min(one: Vector): number;
+    function min(one: Vector | number, other: Vector | number): Vector;
+    function max(one: Vector | number, other: Vector | number): Vector;
     function apply(one: Vector | number, other: Vector | number, f: any): Vector;
 }
 
