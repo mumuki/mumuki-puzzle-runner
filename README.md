@@ -180,6 +180,7 @@ handling solutions persistence and submitting them
     * [.fitImagesVertically](#MuzzleCanvas+fitImagesVertically) : <code>boolean</code>
     * [.previousSolutionContent](#MuzzleCanvas+previousSolutionContent) : <code>string</code>
     * [.simple](#MuzzleCanvas+simple) : <code>boolean</code>
+    * [.referenceInsertAxis](#MuzzleCanvas+referenceInsertAxis) : <code>Axis</code>
     * [.baseConfig](#MuzzleCanvas+baseConfig)
     * [.outlineConfig](#MuzzleCanvas+outlineConfig)
     * [.adjustedPieceSize](#MuzzleCanvas+adjustedPieceSize) ⇒ <code>Vector</code>
@@ -195,7 +196,7 @@ handling solutions persistence and submitting them
     * [.expect(refs)](#MuzzleCanvas+expect)
     * [.basic(x, y, imagePath)](#MuzzleCanvas+basic) ⇒ <code>Promise.&lt;Canvas&gt;</code>
     * [.multi(x, y, [imagePaths])](#MuzzleCanvas+multi) ⇒ <code>Promise.&lt;Canvas&gt;</code>
-    * [.match(leftUrls, rightUrls, leftOddUrls, rightOddUrls)](#MuzzleCanvas+match) ⇒ <code>Promise.&lt;Canvas&gt;</code>
+    * [.match(leftUrls, rightUrls, leftOddUrls, rightOddUrls, rightWidthRatio)](#MuzzleCanvas+match) ⇒ <code>Promise.&lt;Canvas&gt;</code>
     * [.custom(canvas)](#MuzzleCanvas+custom) ⇒ <code>Promise.&lt;Canvas&gt;</code>
     * [.scale(width, height)](#MuzzleCanvas+scale)
     * [.focus()](#MuzzleCanvas+focus)
@@ -284,7 +285,15 @@ if any
 Whether the current puzzle can be solved in very few tries.
 
 Set null for automatic configuration of this property. Basic puzzles will be considered
-basic and match puzzles will be considered non-basic.
+basic and match puzzles will be considered non-simple.
+
+**Kind**: instance property of [<code>MuzzleCanvas</code>](#MuzzleCanvas)
+<a name="MuzzleCanvas+referenceInsertAxis"></a>
+
+### muzzleCanvas.referenceInsertAxis : <code>Axis</code>
+The reference insert axis, used at rounded outline to compute insert internal and external diameters
+Set null for default computation of axis - no axis reference for basic boards
+and vertical axis for match
 
 **Kind**: instance property of [<code>MuzzleCanvas</code>](#MuzzleCanvas)
 <a name="MuzzleCanvas+baseConfig"></a>
@@ -414,19 +423,20 @@ submitted when solved
 
 <a name="MuzzleCanvas+match"></a>
 
-### muzzleCanvas.match(leftUrls, rightUrls, leftOddUrls, rightOddUrls) ⇒ <code>Promise.&lt;Canvas&gt;</code>
+### muzzleCanvas.match(leftUrls, rightUrls, leftOddUrls, rightOddUrls, rightWidthRatio) ⇒ <code>Promise.&lt;Canvas&gt;</code>
 Craates a match puzzle, where left pieces are matched against right pieces,
 with optional odd left and right pieces that don't match
 
 **Kind**: instance method of [<code>MuzzleCanvas</code>](#MuzzleCanvas)
 **Returns**: <code>Promise.&lt;Canvas&gt;</code> - the promise of the built canvas
 
-| Param | Type | Description |
-| --- | --- | --- |
-| leftUrls | <code>Array.&lt;string&gt;</code> |  |
-| rightUrls | <code>Array.&lt;string&gt;</code> | must be of the same size of lefts |
-| leftOddUrls | <code>Array.&lt;string&gt;</code> |  |
-| rightOddUrls | <code>Array.&lt;string&gt;</code> |  |
+| Param | Type | Default | Description |
+| --- | --- | --- | --- |
+| leftUrls | <code>Array.&lt;string&gt;</code> |  |  |
+| rightUrls | <code>Array.&lt;string&gt;</code> |  | must be of the same size of lefts |
+| leftOddUrls | <code>Array.&lt;string&gt;</code> |  |  |
+| rightOddUrls | <code>Array.&lt;string&gt;</code> |  |  |
+| rightWidthRatio | <code>number</code> | <code>1</code> | a multiplicator to apply to the right piece's width. Useful for created irregular puzzles |
 
 <a name="MuzzleCanvas+custom"></a>
 
