@@ -211,13 +211,14 @@
       </div>
 
       <div class="sample">
-        <h2>Match</h2>
+        <h2>Match (Irregular Pieces)</h2>
         <div id="muzzle-canvas-match-irregular" >
         </div>
         <pre>
           <code>
             const baseUrl = 'https://raw.githubusercontent.com/MumukiProject/mumuki-guia-gobstones-alternativa-kids/master/assets/attires/';
             Match.aspectRatio = 2
+            Match.strokeWidth = 6; // compensate the thinner stroke
             Match.match([
               `${baseUrl}/va_vacio.png`,
               `${baseUrl}/cu_vacio.png`,
@@ -228,12 +229,13 @@
               `${baseUrl}/chips_mucho.png`,
             ], [
               `${baseUrl}/choc_mitad_vacio2.png`
-            ], [], 2);
+            ], [], 2); // double the right pieces' width
           </code>
         </pre>
         <script>
           const irregular = Muzzle.another('muzzle-canvas-match-irregular');
           irregular.aspectRatio = 2
+          irregular.strokeWidth = 6;
           irregular.match([
             `${baseUrl}/va_vacio.png`,
             `${baseUrl}/cu_vacio.png`,
