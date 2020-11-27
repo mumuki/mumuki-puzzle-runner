@@ -269,7 +269,9 @@ aspectRatio
 
 ### muzzleCanvas.fitImagesVertically : <code>boolean</code>
 If the images should be adjusted vertically instead of horizontally
-to puzzle dimensions. `false` by default
+to puzzle dimensions.
+
+Set null for automatic fit.
 
 **Kind**: instance property of [<code>MuzzleCanvas</code>](#MuzzleCanvas)
 <a name="MuzzleCanvas+previousSolutionContent"></a>

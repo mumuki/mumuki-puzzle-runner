@@ -29,7 +29,7 @@
         </div>
         <pre>
         <code>
-          Muzzle.basic(1, 2, './torta_1_sinborde.svg');
+  Muzzle.basic(1, 2, './torta_1_sinborde.svg');
         </code>
         </pre>
         <script>
@@ -49,7 +49,7 @@
         </div>
         <pre>
           <code>
-            Muzzle.basic(3, 1, './torta_1_sinborde.svg');
+  Muzzle.basic(3, 1, './torta_1_sinborde.svg');
           </code>
         </pre>
         <script>
@@ -71,7 +71,7 @@
         </div>
         <pre>
           <code>
-            Muzzle.basic(3, 3, './torta_1_sinborde.svg')
+  Muzzle.basic(3, 3, './torta_1_sinborde.svg')
           </code>
         </pre>
         <script>
@@ -92,12 +92,12 @@
         </div>
         <pre>
           <code>
-            Muzzle.basic(3, 3, './torta_1_sinborde.svg').then(it => {
-              it.solve();
-              solved.resetCoordinates();
-              it.redraw();
-              solved.focus();
-            });
+  Muzzle.basic(3, 3, './torta_1_sinborde.svg').then(it => {
+    it.solve();
+    solved.resetCoordinates();
+    it.redraw();
+    solved.focus();
+  });
           </code>
         </pre>
         <script>
@@ -123,9 +123,9 @@
         </div>
         <pre>
           <code>
-            Muzzle.aspectRatio = 1;
-            Muzzle.spiky = true;
-            Muzzle.basic(1, 2, './torta_1_sinborde.svg');
+  Muzzle.aspectRatio = 1;
+  Muzzle.spiky = true;
+  Muzzle.basic(1, 2, './torta_1_sinborde.svg');
           </code>
         </pre>
         <script>
@@ -148,9 +148,9 @@
         </div>
         <pre>
           <code>
-            Muzzle.aspectRatio = 1;
-            Muzzle.fitImagesVertically = true;
-            Muzzle.basic(1, 2, './torta_1_sinborde.svg');
+  Muzzle.aspectRatio = 1;
+  Muzzle.fitImagesVertically = true;
+  Muzzle.basic(1, 2, './torta_1_sinborde.svg');
           </code>
         </pre>
         <script>
@@ -173,18 +173,18 @@
         </div>
         <pre>
           <code>
-            const baseUrl = 'https://raw.githubusercontent.com/MumukiProject/mumuki-guia-gobstones-alternativa-kids/master/assets/attires/';
-            Muzzle.match([
-              `${baseUrl}/va_vacio.png`,
-              `${baseUrl}/cu_vacio.png`,
-              `${baseUrl}/chips_poco.png`
-            ], [
-              `${baseUrl}/va_fru.png`,
-              `${baseUrl}/cu_vai.png`,
-              `${baseUrl}/chips_mucho.png`,
-            ], [
-              `${baseUrl}/choc_mitad_vacio2.png`
-            ]);
+  const baseUrl = 'https://raw.githubusercontent.com/MumukiProject/mumuki-guia-gobstones-alternativa-kids/master/assets/attires/';
+  Muzzle.match([
+    `${baseUrl}/va_vacio.png`,
+    `${baseUrl}/cu_vacio.png`,
+    `${baseUrl}/chips_poco.png`
+  ], [
+    `${baseUrl}/va_fru.png`,
+    `${baseUrl}/cu_vai.png`,
+    `${baseUrl}/chips_mucho.png`,
+  ], [
+    `${baseUrl}/choc_mitad_vacio2.png`
+  ]);
           </code>
         </pre>
         <script>
@@ -216,27 +216,66 @@
         </div>
         <pre>
           <code>
-            const baseUrl = 'https://raw.githubusercontent.com/MumukiProject/mumuki-guia-gobstones-alternativa-kids/master/assets/attires/';
-            Match.aspectRatio = 2
-            Match.strokeWidth = 6; // compensate the thinner stroke
-            Match.match([
-              `${baseUrl}/va_vacio.png`,
-              `${baseUrl}/cu_vacio.png`,
-              `${baseUrl}/chips_poco.png`
-            ], [
-              `${baseUrl}/va_fru.png`,
-              `${baseUrl}/cu_vai.png`,
-              `${baseUrl}/chips_mucho.png`,
-            ], [
-              `${baseUrl}/choc_mitad_vacio2.png`
-            ], [], 2); // double the right pieces' width
+  const baseUrl = 'https://raw.githubusercontent.com/MumukiProject/mumuki-guia-gobstones-primeros-programas-kinder-2/master/assets/';
+  Muzzle.aspectRatio = 2
+  Muzzle.match([
+      `${baseUrl}/match12_prog_si_1606331704226.svg`
+    ], [
+      `${baseUrl}/match12_tab_1606331726883.svg`,
+    ], [
+      `${baseUrl}/match12_prog_no_1606331627470.svg`,
+    ], [], 2); // double the right pieces' width
           </code>
         </pre>
         <script>
+          const irregularBaseUrl = 'https://raw.githubusercontent.com/MumukiProject/mumuki-guia-gobstones-primeros-programas-kinder-2/master/assets/';
           const irregular = Muzzle.another('muzzle-canvas-match-irregular');
           irregular.aspectRatio = 2
-          irregular.strokeWidth = 6;
           irregular.match([
+              `${irregularBaseUrl}/match12_prog_si_1606331704226.svg`
+            ], [
+              `${irregularBaseUrl}/match12_tab_1606331726883.svg`,
+            ], [
+              `${irregularBaseUrl}/match12_prog_no_1606331627470.svg`,
+            ], [], 2); // double the right pieces' width
+          irregular.onSubmit = (solutionJson, valid) => {
+            alert('I am valid and I am going to submit solution')
+          };
+          irregular.onValid = () => {
+            alert('I am valid, but I am not going to submit solution');
+          };
+        </script>
+      </div>
+
+      <div class="sample">
+        <h2>Match (Irregular Pieces With Fixed Fit)</h2>
+        <div id="muzzle-canvas-match-irregular-fixed" >
+        </div>
+        <pre>
+          <code>
+  const baseUrl = 'https://raw.githubusercontent.com/MumukiProject/mumuki-guia-gobstones-alternativa-kids/master/assets/attires/';
+  Muzzle.aspectRatio = 2;
+  Muzzle.fitImagesVertically = false;
+  Muzzle.strokeWidth = 6; // compensate the thinner stroke
+  Muzzle.match([
+    `${baseUrl}/va_vacio.png`,
+    `${baseUrl}/cu_vacio.png`,
+    `${baseUrl}/chips_poco.png`
+  ], [
+    `${baseUrl}/va_fru.png`,
+    `${baseUrl}/cu_vai.png`,
+    `${baseUrl}/chips_mucho.png`,
+  ], [
+    `${baseUrl}/choc_mitad_vacio2.png`
+  ], [], 2);
+          </code>
+        </pre>
+        <script>
+          const irregularFixed = Muzzle.another('muzzle-canvas-match-irregular-fixed');
+          irregularFixed.fitImagesVertically = false;
+          irregularFixed.aspectRatio = 2
+          irregularFixed.strokeWidth = 6; // compensate the thinner stroke
+          irregularFixed.match([
             `${baseUrl}/va_vacio.png`,
             `${baseUrl}/cu_vacio.png`,
             `${baseUrl}/chips_poco.png`
@@ -247,10 +286,10 @@
           ], [
             `${baseUrl}/choc_mitad_vacio2.png`
           ], [], 2);
-          irregular.onSubmit = (solutionJson, valid) => {
+          irregularFixed.onSubmit = (solutionJson, valid) => {
             alert('I am valid and I am going to submit solution')
           };
-          irregular.onValid = () => {
+          irregularFixed.onValid = () => {
             alert('I am valid, but I am not going to submit solution');
           };
         </script>
