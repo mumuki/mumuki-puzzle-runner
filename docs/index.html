@@ -182,9 +182,9 @@
     `${baseUrl}/va_fru.png`,
     `${baseUrl}/cu_vai.png`,
     `${baseUrl}/chips_mucho.png`,
-  ], [
-    `${baseUrl}/choc_mitad_vacio2.png`
-  ]);
+  ], {
+    leftOddUrls: [ `${baseUrl}/choc_mitad_vacio2.png` ]
+  });
           </code>
         </pre>
         <script>
@@ -198,50 +198,13 @@
             `${baseUrl}/va_fru.png`,
             `${baseUrl}/cu_vai.png`,
             `${baseUrl}/chips_mucho.png`,
-          ], [
-            `${baseUrl}/choc_mitad_vacio2.png`
-          ]);
+          ], {
+            leftOddUrls: [ `${baseUrl}/choc_mitad_vacio2.png` ]
+          });
           match.onSubmit = (solutionJson, valid) => {
             alert('I am valid and I am going to submit solution')
           };
           match.onValid = () => {
-            alert('I am valid, but I am not going to submit solution');
-          };
-        </script>
-      </div>
-
-      <div class="sample">
-        <h2>Match (Irregular Pieces)</h2>
-        <div id="muzzle-canvas-match-irregular" >
-        </div>
-        <pre>
-          <code>
-  const baseUrl = 'https://raw.githubusercontent.com/MumukiProject/mumuki-guia-gobstones-primeros-programas-kinder-2/master/assets/';
-  Muzzle.aspectRatio = 2
-  Muzzle.match([
-      `${baseUrl}/match12_prog_si_1606331704226.svg`
-    ], [
-      `${baseUrl}/match12_tab_1606331726883.svg`,
-    ], [
-      `${baseUrl}/match12_prog_no_1606331627470.svg`,
-    ], [], 2); // double the right pieces' width
-          </code>
-        </pre>
-        <script>
-          const irregularBaseUrl = 'https://raw.githubusercontent.com/MumukiProject/mumuki-guia-gobstones-primeros-programas-kinder-2/master/assets/';
-          const irregular = Muzzle.another('muzzle-canvas-match-irregular');
-          irregular.aspectRatio = 2
-          irregular.match([
-              `${irregularBaseUrl}/match12_prog_si_1606331704226.svg`
-            ], [
-              `${irregularBaseUrl}/match12_tab_1606331726883.svg`,
-            ], [
-              `${irregularBaseUrl}/match12_prog_no_1606331627470.svg`,
-            ], [], 2); // double the right pieces' width
-          irregular.onSubmit = (solutionJson, valid) => {
-            alert('I am valid and I am going to submit solution')
-          };
-          irregular.onValid = () => {
             alert('I am valid, but I am not going to submit solution');
           };
         </script>
@@ -254,7 +217,7 @@
         <pre>
           <code>
   const baseUrl = 'https://raw.githubusercontent.com/MumukiProject/mumuki-guia-gobstones-alternativa-kids/master/assets/attires/';
-  Muzzle.aspectRatio = 2;
+  Muzzle.aspectRatio = 0.5; // left pieces are 1:2
   Muzzle.fitImagesVertically = false;
   Muzzle.strokeWidth = 6; // compensate the thinner stroke
   Muzzle.match([
@@ -265,16 +228,17 @@
     `${baseUrl}/va_fru.png`,
     `${baseUrl}/cu_vai.png`,
     `${baseUrl}/chips_mucho.png`,
-  ], [
-    `${baseUrl}/choc_mitad_vacio2.png`
-  ], [], 2);
+  ], {
+    leftOddUrls: [ `${baseUrl}/choc_mitad_vacio2.png` ],
+    rightAspectRatio: 1 // right pieces are 1:1
+  });
           </code>
         </pre>
         <script>
           const irregularFixed = Muzzle.another('muzzle-canvas-match-irregular-fixed');
           irregularFixed.fitImagesVertically = false;
-          irregularFixed.aspectRatio = 2
-          irregularFixed.strokeWidth = 6; // compensate the thinner stroke
+          irregularFixed.aspectRatio = 0.5
+          irregularFixed.strokeWidth = 6;
           irregularFixed.match([
             `${baseUrl}/va_vacio.png`,
             `${baseUrl}/cu_vacio.png`,
@@ -283,13 +247,47 @@
             `${baseUrl}/va_fru.png`,
             `${baseUrl}/cu_vai.png`,
             `${baseUrl}/chips_mucho.png`,
-          ], [
-            `${baseUrl}/choc_mitad_vacio2.png`
-          ], [], 2);
+          ], {
+            leftOddUrls: [ `${baseUrl}/choc_mitad_vacio2.png` ],
+            rightAspectRatio: 1
+          });
           irregularFixed.onSubmit = (solutionJson, valid) => {
             alert('I am valid and I am going to submit solution')
           };
           irregularFixed.onValid = () => {
+            alert('I am valid, but I am not going to submit solution');
+          };
+        </script>
+      </div>
+
+      <div class="sample">
+        <h2>Choose (Irregular Pieces)</h2>
+        <div id="muzzle-canvas-choose-irregular" >
+        </div>
+        <pre>
+          <code>
+  const baseUrl = 'https://raw.githubusercontent.com/MumukiProject/mumuki-guia-gobstones-primeros-programas-kinder-2/master/assets/';
+  Muzzle.aspectRatio = 0.5 // left pieces are 1:2
+  Muzzle.choose(
+    `${baseUrl}/match12_prog_si_1606331704226.svg`,
+    `${baseUrl}/match12_tab_1606331726883.svg`, [
+      `${baseUrl}/match12_prog_no_1606331627470.svg`,
+    ], 1); // right pieces are 1:1
+          </code>
+        </pre>
+        <script>
+          const irregularBaseUrl = 'https://raw.githubusercontent.com/MumukiProject/mumuki-guia-gobstones-primeros-programas-kinder-2/master/assets/';
+          const irregular = Muzzle.another('muzzle-canvas-choose-irregular');
+          irregular.aspectRatio = 0.5;
+          irregular.choose(
+            `${irregularBaseUrl}/match12_prog_si_1606331704226.svg`,
+            `${irregularBaseUrl}/match12_tab_1606331726883.svg`, [
+              `${irregularBaseUrl}/match12_prog_no_1606331627470.svg`,
+            ], 1);
+          irregular.onSubmit = (solutionJson, valid) => {
+            alert('I am valid and I am going to submit solution')
+          };
+          irregular.onValid = () => {
             alert('I am valid, but I am not going to submit solution');
           };
         </script>
