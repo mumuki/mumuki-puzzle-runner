@@ -188,6 +188,12 @@ declare class Canvas {
      */
     shuffleGrid(farness?: number): void;
     /**
+     * **Warning**: this method requires {@code maxPiecesCount} to be set.
+     * **Warning**: this method requires puzzle to have an even number of columns
+     */
+    shuffleLine(farness?: number): void;
+    shuffleWith(farness: number, shuffler: Shuffler): void;
+    /**
      * Draws this canvas for the first time
      */
     draw(): void;
@@ -873,6 +879,8 @@ declare function random(maxX: number, maxY: number): Shuffler;
 declare function grid(): void;
 
 declare function columns(): void;
+
+declare function line(): void;
 
 declare function padder(padding: number, width: number, height: number): Shuffler;
 

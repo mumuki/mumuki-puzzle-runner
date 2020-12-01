@@ -92,9 +92,9 @@ Muzzle.match([
   `${baseUrl}/va_fru.png`,
   `${baseUrl}/cu_vai.png`,
   `${baseUrl}/chips_mucho.png`,
-], [
-  `${baseUrl}/choc_mitad_vacio2.png`
-]);
+], {
+  leftOddUrls: [ `${baseUrl}/choc_mitad_vacio2.png` ]
+});
 
 // with left and right pieces, and right odd pieces
 Muzzle.match([
@@ -105,10 +105,47 @@ Muzzle.match([
   `${baseUrl}/va_fru.png`,
   `${baseUrl}/cu_vai.png`,
   `${baseUrl}/chips_mucho.png`,
-],
-[], [
-  `${baseUrl}/choc_mitad_vacio2.png`
-]);
+], {
+  rightOddUrls: [ `${baseUrl}/choc_mitad_vacio2.png` ]
+});
+
+// using a different aspect ratio for right pieces
+Muzzle.match([
+  `${baseUrl}/va_vacio.png`,
+  `${baseUrl}/cu_vacio.png`,
+  `${baseUrl}/chips_poco.png`
+], [
+  `${baseUrl}/va_fru.png`,
+  `${baseUrl}/cu_vai.png`,
+  `${baseUrl}/chips_mucho.png`,
+], {
+  rightAspectRatio: 2
+});
+
+// using a different shuffler
+Muzzle.shuffler = Muzzle.Shuffler.line;
+Muzzle.match([
+  `${baseUrl}/va_vacio.png`,
+  `${baseUrl}/cu_vacio.png`,
+], [
+  `${baseUrl}/va_fru.png`,
+  `${baseUrl}/cu_vai.png`,
+], {
+  leftOddUrls: [ `${baseUrl}/choc_mitad_vacio2.png`, `${baseUrl}/chips_poco.png` ],
+});
+```
+
+## Choose puzzle
+
+```javascript
+const baseUrl = 'https://raw.githubusercontent.com/MumukiProject/mumuki-guia-gobstones-primeros-programas-kinder-2/master/assets/';
+// left pieces are 1:2 (0.5) and right pieces are 1:1 (1)
+Muzzle.aspectRatio = 0.5;
+Muzzle.choose(
+  `${baseUrl}/match12_prog_si_1606331704226.svg`,
+  `${baseUrl}/match12_tab_1606331726883.svg`,
+  [ `${baseUrl}/match12_prog_no_1606331627470.svg`, ],
+  1);
 ```
 
 # Solution format
@@ -151,8 +188,6 @@ of the given id</p>
 ## Typedefs
 
 <dl>
-<dt><a href="#PieceConfig">PieceConfig</a> : <code>object</code></dt>
-<dd></dd>
 <dt><a href="#Point">Point</a> : <code>Array.&lt;number&gt;</code></dt>
 <dd></dd>
 <dt><a href="#Solution">Solution</a> : <code>object</code></dt>
@@ -178,6 +213,8 @@ handling solutions persistence and submitting them
     * [.pieceSize](#MuzzleCanvas+pieceSize) : <code>number</code>
     * [.aspectRatio](#MuzzleCanvas+aspectRatio) : <code>number</code>
     * [.fitImagesVertically](#MuzzleCanvas+fitImagesVertically) : <code>boolean</code>
+    * [.manualScale](#MuzzleCanvas+manualScale)
+    * [.shuffler](#MuzzleCanvas+shuffler)
     * [.previousSolutionContent](#MuzzleCanvas+previousSolutionContent) : <code>string</code>
     * [.simple](#MuzzleCanvas+simple) : <code>boolean</code>
     * [.referenceInsertAxis](#MuzzleCanvas+referenceInsertAxis) : <code>Axis</code>
@@ -185,6 +222,7 @@ handling solutions persistence and submitting them
     * [.outlineConfig](#MuzzleCanvas+outlineConfig)
     * [.adjustedPieceSize](#MuzzleCanvas+adjustedPieceSize) ⇒ <code>Vector</code>
     * [.imageAdjustmentAxis](#MuzzleCanvas+imageAdjustmentAxis) : <code>Axis</code>
+    * [.effectiveAspectRatio](#MuzzleCanvas+effectiveAspectRatio) : <code>number</code>
     * [.canvas](#MuzzleCanvas+canvas) ⇒ <code>Canvas</code>
     * [.solution](#MuzzleCanvas+solution) ⇒ [<code>Solution</code>](#Solution)
     * [.solutionContent](#MuzzleCanvas+solutionContent)
@@ -196,7 +234,8 @@ handling solutions persistence and submitting them
     * [.expect(refs)](#MuzzleCanvas+expect)
     * [.basic(x, y, imagePath)](#MuzzleCanvas+basic) ⇒ <code>Promise.&lt;Canvas&gt;</code>
     * [.multi(x, y, [imagePaths])](#MuzzleCanvas+multi) ⇒ <code>Promise.&lt;Canvas&gt;</code>
-    * [.match(leftUrls, rightUrls, leftOddUrls, rightOddUrls, rightWidthRatio)](#MuzzleCanvas+match) ⇒ <code>Promise.&lt;Canvas&gt;</code>
+    * [.choose(leftUrl, rightUrl, leftOddUrls, [rightAspectRatio])](#MuzzleCanvas+choose) ⇒ <code>Promise.&lt;Canvas&gt;</code>
+    * [.match(leftUrls, rightUrls, [options])](#MuzzleCanvas+match) ⇒ <code>Promise.&lt;Canvas&gt;</code>
     * [.custom(canvas)](#MuzzleCanvas+custom) ⇒ <code>Promise.&lt;Canvas&gt;</code>
     * [.scale(width, height)](#MuzzleCanvas+scale)
     * [.focus()](#MuzzleCanvas+focus)
@@ -205,6 +244,7 @@ handling solutions persistence and submitting them
     * [.loadPreviousSolution()](#MuzzleCanvas+loadPreviousSolution)
     * [.resetCoordinates()](#MuzzleCanvas+resetCoordinates)
     * [.submit()](#MuzzleCanvas+submit)
+    * [._config(key, value)](#MuzzleCanvas+_config)
 
 <a name="MuzzleCanvas+canvasId"></a>
 
@@ -261,7 +301,7 @@ Piece size
 <a name="MuzzleCanvas+aspectRatio"></a>
 
 ### muzzleCanvas.aspectRatio : <code>number</code>
-The x:y aspect ratio of the piece. Set null for automatic
+The `x:y` aspect ratio of the piece. Set null for automatic
 aspectRatio
 
 **Kind**: instance property of [<code>MuzzleCanvas</code>](#MuzzleCanvas)
@@ -272,6 +312,21 @@ If the images should be adjusted vertically instead of horizontally
 to puzzle dimensions.
 
 Set null for automatic fit.
+
+**Kind**: instance property of [<code>MuzzleCanvas</code>](#MuzzleCanvas)
+<a name="MuzzleCanvas+manualScale"></a>
+
+### muzzleCanvas.manualScale
+Wether the scaling should ignore the scaler
+rise events
+
+**Kind**: instance property of [<code>MuzzleCanvas</code>](#MuzzleCanvas)
+<a name="MuzzleCanvas+shuffler"></a>
+
+### muzzleCanvas.shuffler
+The canvas shuffler.
+
+Set it null to automatic shuffling algorithm selection.
 
 **Kind**: instance property of [<code>MuzzleCanvas</code>](#MuzzleCanvas)
 <a name="MuzzleCanvas+previousSolutionContent"></a>
@@ -294,6 +349,7 @@ basic and match puzzles will be considered non-simple.
 
 ### muzzleCanvas.referenceInsertAxis : <code>Axis</code>
 The reference insert axis, used at rounded outline to compute insert internal and external diameters
+
 Set null for default computation of axis - no axis reference for basic boards
 and vertical axis for match
 
@@ -315,6 +371,12 @@ The piece size, adjusted to the aspect ratio
 <a name="MuzzleCanvas+imageAdjustmentAxis"></a>
 
 ### muzzleCanvas.imageAdjustmentAxis : <code>Axis</code>
+**Kind**: instance property of [<code>MuzzleCanvas</code>](#MuzzleCanvas)
+<a name="MuzzleCanvas+effectiveAspectRatio"></a>
+
+### muzzleCanvas.effectiveAspectRatio : <code>number</code>
+The configured aspect ratio, or 1
+
 **Kind**: instance property of [<code>MuzzleCanvas</code>](#MuzzleCanvas)
 <a name="MuzzleCanvas+canvas"></a>
 
@@ -382,7 +444,7 @@ property with any code you need the be called here
 ### muzzleCanvas.draw()
 Draws the - previusly built - current canvas.
 
-Prefer {@code this.currentCanvas.redraw()} when performing
+Prefer `this.currentCanvas.redraw()` when performing
 small updates to the pieces.
 
 **Kind**: instance method of [<code>MuzzleCanvas</code>](#MuzzleCanvas)
@@ -423,22 +485,42 @@ submitted when solved
 | y | <code>number</code> |
 | [imagePaths] | <code>Array.&lt;string&gt;</code> |
 
-<a name="MuzzleCanvas+match"></a>
+<a name="MuzzleCanvas+choose"></a>
 
-### muzzleCanvas.match(leftUrls, rightUrls, leftOddUrls, rightOddUrls, rightWidthRatio) ⇒ <code>Promise.&lt;Canvas&gt;</code>
-Craates a match puzzle, where left pieces are matched against right pieces,
-with optional odd left and right pieces that don't match
+### muzzleCanvas.choose(leftUrl, rightUrl, leftOddUrls, [rightAspectRatio]) ⇒ <code>Promise.&lt;Canvas&gt;</code>
+Creates a choose puzzle, where a single right piece must match the single left piece,
+choosing the latter from a bunch of other left odd pieces. By default, `Muzzle.Shuffler.line` shuffling is used.
+
+This is a particular case of a match puzzle with line
 
 **Kind**: instance method of [<code>MuzzleCanvas</code>](#MuzzleCanvas)
 **Returns**: <code>Promise.&lt;Canvas&gt;</code> - the promise of the built canvas
 
 | Param | Type | Default | Description |
 | --- | --- | --- | --- |
-| leftUrls | <code>Array.&lt;string&gt;</code> |  |  |
-| rightUrls | <code>Array.&lt;string&gt;</code> |  | must be of the same size of lefts |
-| leftOddUrls | <code>Array.&lt;string&gt;</code> |  |  |
-| rightOddUrls | <code>Array.&lt;string&gt;</code> |  |  |
-| rightWidthRatio | <code>number</code> | <code>1</code> | a multiplicator to apply to the right piece's width. Useful for created irregular puzzles |
+| leftUrl | <code>string</code> |  | the url of the left piece |
+| rightUrl | <code>string</code> |  | the url of the right piece |
+| leftOddUrls | <code>Array.&lt;string&gt;</code> |  | the urls of the off left urls |
+| [rightAspectRatio] | <code>number</code> | <code></code> | the `x:y` ratio of the right pieces, that override the general `aspectRatio` of the puzzle.                                    Use null to have the same aspect ratio as left pieces |
+
+<a name="MuzzleCanvas+match"></a>
+
+### muzzleCanvas.match(leftUrls, rightUrls, [options]) ⇒ <code>Promise.&lt;Canvas&gt;</code>
+Creates a match puzzle, where left pieces are matched against right pieces,
+with optional odd left and right pieces that don't match. By default, `Muzzle.Shuffler.columns`
+shuffling is used.
+
+**Kind**: instance method of [<code>MuzzleCanvas</code>](#MuzzleCanvas)
+**Returns**: <code>Promise.&lt;Canvas&gt;</code> - the promise of the built canvas
+
+| Param | Type | Description |
+| --- | --- | --- |
+| leftUrls | <code>Array.&lt;string&gt;</code> |  |
+| rightUrls | <code>Array.&lt;string&gt;</code> | must be of the same size of lefts |
+| [options] | <code>object</code> |  |
+| [options.leftOddUrls] | <code>Array.&lt;string&gt;</code> |  |
+| [options.rightOddUrls] | <code>Array.&lt;string&gt;</code> |  |
+| [options.rightAspectRatio] | <code>number</code> | the aspect ratio of the right pieces. Use null to have the same aspect ratio as left pieces |
 
 <a name="MuzzleCanvas+custom"></a>
 
@@ -506,6 +588,16 @@ Submits the puzzle to the bridge,
 validating it if necessary
 
 **Kind**: instance method of [<code>MuzzleCanvas</code>](#MuzzleCanvas)
+<a name="MuzzleCanvas+_config"></a>
+
+### muzzleCanvas.\_config(key, value)
+**Kind**: instance method of [<code>MuzzleCanvas</code>](#MuzzleCanvas)
+
+| Param | Type |
+| --- | --- |
+| key | <code>string</code> |
+| value | <code>any</code> |
+
 <a name="another"></a>
 
 ## another(id) ⇒ [<code>MuzzleCanvas</code>](#MuzzleCanvas)
@@ -517,17 +609,6 @@ of the given id
 | Param | Type |
 | --- | --- |
 | id | <code>string</code> |
-
-<a name="PieceConfig"></a>
-
-## PieceConfig : <code>object</code>
-**Kind**: global typedef
-**Properties**
-
-| Name | Type |
-| --- | --- |
-| imagePath | <code>string</code> |
-| structure | <code>string</code> |
 
 <a name="Point"></a>
 
