@@ -245,6 +245,8 @@ handling solutions persistence and submitting them
     * [.resetCoordinates()](#MuzzleCanvas+resetCoordinates)
     * [.submit()](#MuzzleCanvas+submit)
     * [._config(key, value)](#MuzzleCanvas+_config)
+    * [.register(event)](#MuzzleCanvas+register)
+    * [.run()](#MuzzleCanvas+run)
 
 <a name="MuzzleCanvas+canvasId"></a>
 
@@ -598,6 +600,24 @@ validating it if necessary
 | key | <code>string</code> |
 | value | <code>any</code> |
 
+<a name="MuzzleCanvas+register"></a>
+
+### muzzleCanvas.register(event)
+Registers an event handler
+
+**Kind**: instance method of [<code>MuzzleCanvas</code>](#MuzzleCanvas)
+
+| Param | Type |
+| --- | --- |
+| event | <code>string</code> |
+
+<a name="MuzzleCanvas+run"></a>
+
+### muzzleCanvas.run()
+Runs the given action if muzzle is ready,
+queueing it otherwise
+
+**Kind**: instance method of [<code>MuzzleCanvas</code>](#MuzzleCanvas)
 <a name="another"></a>
 
 ## another(id) ⇒ [<code>MuzzleCanvas</code>](#MuzzleCanvas)
