@@ -392,6 +392,11 @@ declare class KonvaPainter implements Painter {
     logicalTranslate(_canvas: Canvas, piece: Piece, group: any): void;
     onDrag(_canvas: Canvas, piece: Piece, group: Group, f: VectorAction): void;
     onDragEnd(_canvas: Canvas, _piece: Piece, group: Group, f: Action): void;
+    _newLine(options: any): void;
+    _newGroup(options: any): void;
+    _newText(options: any): void;
+    _newStage(options: any): void;
+    _newLayer(options: any): void;
 }
 
 declare type Figure = {
