@@ -227,7 +227,6 @@
   const baseUrl = 'https://raw.githubusercontent.com/MumukiProject/mumuki-guia-gobstones-alternativa-kids/master/assets/attires/';
   Muzzle.aspectRatio = 0.5; // left pieces are 1:2
   Muzzle.fitImagesVertically = false;
-  Muzzle.strokeWidth = 6; // compensate the thinner stroke
   Muzzle.match([
     `${baseUrl}/va_vacio.png`,
     `${baseUrl}/cu_vacio.png`,
@@ -246,7 +245,6 @@
           const irregularFixed = Muzzle.another('muzzle-canvas-match-irregular-fixed');
           irregularFixed.fitImagesVertically = false;
           irregularFixed.aspectRatio = 0.5
-          irregularFixed.strokeWidth = 6;
           irregularFixed.match([
             `${baseUrl}/va_vacio.png`,
             `${baseUrl}/cu_vacio.png`,
