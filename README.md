@@ -233,7 +233,6 @@ handling solutions persistence and submitting them
     * [.draw()](#MuzzleCanvas+draw)
     * [.expect(refs)](#MuzzleCanvas+expect)
     * [.basic(x, y, imagePath)](#MuzzleCanvas+basic) ⇒ <code>Promise.&lt;Canvas&gt;</code>
-    * [.multi(x, y, [imagePaths])](#MuzzleCanvas+multi) ⇒ <code>Promise.&lt;Canvas&gt;</code>
     * [.choose(leftUrl, rightUrl, leftOddUrls, [rightAspectRatio])](#MuzzleCanvas+choose) ⇒ <code>Promise.&lt;Canvas&gt;</code>
     * [.match(leftUrls, rightUrls, [options])](#MuzzleCanvas+match) ⇒ <code>Promise.&lt;Canvas&gt;</code>
     * [.custom(canvas)](#MuzzleCanvas+custom) ⇒ <code>Promise.&lt;Canvas&gt;</code>
@@ -474,18 +473,6 @@ submitted when solved
 | x | <code>number</code> | the number of horizontal pieces |
 | y | <code>number</code> | the number of vertical pieces |
 | imagePath | <code>string</code> |  |
-
-<a name="MuzzleCanvas+multi"></a>
-
-### muzzleCanvas.multi(x, y, [imagePaths]) ⇒ <code>Promise.&lt;Canvas&gt;</code>
-**Kind**: instance method of [<code>MuzzleCanvas</code>](#MuzzleCanvas)
-**Returns**: <code>Promise.&lt;Canvas&gt;</code> - the promise of the built canvas
-
-| Param | Type |
-| --- | --- |
-| x | <code>number</code> |
-| y | <code>number</code> |
-| [imagePaths] | <code>Array.&lt;string&gt;</code> |
 
 <a name="MuzzleCanvas+choose"></a>
 
