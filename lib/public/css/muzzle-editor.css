@@ -10,10 +10,6 @@
     border: 1px solid #dddddd;
 }
 
-.mu-kids-exercise-workspace.muzzle-simple .mu-kids-submit-button {
-  display: none;
-}
-
 .mu-kids-state-image img {
   height: 100%;
   width: auto;
